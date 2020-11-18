@@ -1,0 +1,1511 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta name="generator" content="pandoc">
+  <title>Systematic Review with Active Learning</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- jQuery -->
+  <script src="Systematic%20Review%20with%20Active%20Learning-Dateien/jquery.js"></script>
+  <script src="Systematic%20Review%20with%20Active%20Learning-Dateien/jquery-ui.js"></script>
+  
+  <!-- bootstrap -->
+  <!--<link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet"  id="style">-->
+  <script src="Systematic%20Review%20with%20Active%20Learning-Dateien/bootstrap.js"></script>
+  
+  <!-- highlight.js -->
+  <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/default.min.css" rel="stylesheet" id="code-style">-->
+  <script src="Systematic%20Review%20with%20Active%20Learning-Dateien/highlight.js"></script>
+  <script>
+  hljs.LANGUAGES.r=function(a){var b="([a-zA-Z]|\\.[a-zA-Z.])[a-zA-Z0-9._]*";return{c:[a.HCM,{b:b,l:b,k:{keyword:"function if in break next repeat else for return switch while try tryCatch|10 stop warning require library attach detach source setMethod setGeneric setGroupGeneric setClass ...|10",literal:"NULL NA TRUE FALSE T F Inf NaN NA_integer_|10 NA_real_|10 NA_character_|10 NA_complex_|10"},r:0},{cN:"number",b:"0[xX][0-9a-fA-F]+[Li]?\\b",r:0},{cN:"number",b:"\\d+(?:[eE][+\\-]?\\d*)?L\\b",r:0},{cN:"number",b:"\\d+\\.(?!\\d)(?:i\\b)?",r:0},{cN:"number",b:"\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",r:0},{b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[a.BE],r:0},{cN:"string",b:"'",e:"'",c:[a.BE],r:0}]}}(hljs); </script>
+  <!--<script type="text/javascript", src="https://yandex.st/highlightjs/7.3/languages/r.min.js"></script>-->
+  
+  <!-- Manific Popup -->
+  <script src="Systematic%20Review%20with%20Active%20Learning-Dateien/jquery_002.js"></script>
+  
+  <script src="Systematic%20Review%20with%20Active%20Learning-Dateien/MathJax.js" id="">
+  </script>
+  <script defer="defer">
+  // Function to generate the dynamic table of contents
+  jQuery.fn.generate_TOC = function () {
+    var base = $(this[0]);
+  
+    var selectors = ['h1', 'h2', 'h3', 'h4'];
+  
+    var last_ptr = [{}, {}, {}, {}];
+  
+    var anchors = {};
+  
+    generate_anchor = function (text) {
+      var test = text.replace(/\W/g, '_');
+  
+      while(test in anchors){
+        //if no suffix, add one
+        if(test.match(/_\d+$/) === null){
+          test = test + "_2";
+        }
+        //else generate unique id for duplicates by adding one to the suffix
+        else {
+          test = test.replace(/_(\d+)$/, function(match, number){ var num=+number+1; return("_" + num) });
+        }
+      }
+      anchors[test]=1;
+      return(test);
+    }
+  
+    $(selectors.join(',')).filter(function(index) { return $(this).parent().attr("id") != 'header'; }).each(function () {
+  
+      var heading = $(this);
+      var idx = selectors.indexOf(heading.prop('tagName').toLowerCase());
+      var itr = 0;
+  
+      while (itr <= idx) {
+        if (jQuery.isEmptyObject(last_ptr[itr])) {
+          last_ptr[itr] = $('<ul>').addClass('nav');
+          if (itr === 0) {
+            base.append(last_ptr[itr])
+          } else {
+            if(last_ptr[itr-1].children('li').length === 0){
+              last_ptr[itr-1].append(last_ptr[itr]);
+            }
+            else {
+              last_ptr[itr - 1].children('li').last().append(last_ptr[itr]);
+            }
+          }
+        }
+        itr++;
+      }
+      var anchor = generate_anchor(heading.text());
+      heading.attr('id', anchor);
+      var a = $('<a>')
+      .text(heading.text())
+      .attr('href', '#' + anchor);
+  
+    var li = $('<li>')
+      .append(a);
+  
+    last_ptr[idx].append(li);
+    for (i = idx + 1; i < last_ptr.length; i++) {
+      last_ptr[i] = {};
+    }
+    });
+  }
+  /* run scripts when document is ready */
+  $(function() {
+    "use strict";
+  
+    var $window = $(window);
+    var $body = $(document.body);
+  
+    /* size of thumbnails */
+  
+    var hidden_types = ['source']
+    var output_types = ['output', 'message', 'warning', 'error']
+  
+    /* style tables */
+    $('table').addClass('table table-striped table-bordered table-hover table-condensed');
+  
+    $('pre code').each(function(i, e) {
+      hljs.highlightBlock(e);
+    });
+  
+    /* Magnific Popup */
+    $(".thumbnail").each(function(){
+      $(this).magnificPopup({
+        disableOn: 768,
+        closeOnContentClick: true,
+  
+        type: 'image',
+        items: {
+          src: $(this).find('img').attr('src'),
+        }
+      });
+    });
+  
+    function toggle_block(obj, show) {
+      var span = obj.find('span');
+      if(show === true){
+        span.removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+        obj.next('pre').slideDown();
+      }
+      else {
+        span.removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+        obj.next('pre').slideUp();
+      }
+    }
+  
+    function toggle_thumbnails(imgs, show){
+      if(show === true){
+        imgs.parents().show()
+        imgs.slideDown();
+      }
+      else {
+        imgs.slideUp(400, function(){ $(this).parent().hide(); });
+      }
+    }
+  
+    function global_toggle(obj){
+      var type = obj.attr('type');
+      var show = !obj.parent('li').hasClass('active');
+      if(show === true){
+        obj.parent('li').addClass('active');
+      }
+      else{
+        obj.parent('li').removeClass('active');
+      }
+      if(type == 'figure'){
+        toggle_thumbnails($('.thumbnail img'), show);
+      }
+      else {
+        $('.toggle.' + type).each(function() { toggle_block($(this), show); });
+      }
+    }
+  
+    /* onclick toggle next code block */
+    $('.toggle').click(function() {
+      var span = $(this).find('span');
+      toggle_block($(this), !span.hasClass('glyphicon-chevron-down'));
+      return false
+    })
+  
+    // global toggles
+    $('.toggle-global').click(function(){
+      var type = $(this).attr('type');
+      if(type === 'all-source'){
+          $('li a.source').each(function() {
+            global_toggle($(this));
+          });
+        }
+      else if(type === 'all-output'){
+        $.each(output_types, function(i, val){
+          console.log(val);
+          global_toggle($('li a.' + val));
+        });
+      }
+      else {
+        console.log($(this));
+        global_toggle($(this));
+      }
+      return false;
+    });
+    /* table of contents */
+    if($(['h1', 'h2', 'h3', 'h4'].join(',')).length > 0){
+      $('body > #wrap > .container > .row').append('<div class="col-md-2"><div id="toc" class="well sidebar sidenav affix hidden-print"/></div>');
+      $('#toc').generate_TOC();
+    }
+  
+    $.each(hidden_types, function(i, type) {
+      $('li[type=' + type + ']').each(function(){ global_toggle($(this)); });
+    });
+  
+    /* remove paragraphs with no content */
+    $('p:empty').remove();
+  
+    $body.scrollspy({
+      target: '.sidebar',
+    });
+  
+    /* theme switch */
+    $('.theme-switch').click(function(){
+      var css = $('link[title=' + $(this).attr('title') + ']');
+      $('#theme[rel=stylesheet]').attr('href', css.attr('href'));
+      $('.theme-switch').closest('li').removeClass('active');
+      $(this).closest('li').addClass('active');
+      return false;
+    });
+    /* code style switch */ //TODO use same function for both of these?
+    $('.highlight-switch').click(function(){
+      var css = $('link[title="' + $(this).attr('title') + '"]');
+      $('#highlight[rel=stylesheet]').attr('href', css.attr('href'));
+      $('.highlight-switch').closest('li').removeClass('active');
+      $(this).closest('li').addClass('active');
+      return false;
+    });
+  
+    //TODO refresh on show/hide
+    $window.on('load', function () {
+      $body.scrollspy('refresh');
+    })
+  
+  });
+  
+  </script>
+  <style>
+  /* Knitr_bootstrap styles */
+  #header {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  #wrap .container-fluid {
+    padding: 0;
+    overflow: hidden;
+  }
+  .toggle{
+    text-transform: capitalize;
+  }
+  
+  .toggle-global{
+    text-transform: capitalize;
+  }
+  
+  /* Sticky footer styles */
+  * {
+    margin:0;
+  }
+  html,
+  body {
+      height: 100%;
+      padding:0 !important;
+      /* The html and body elements cannot have any padding or margin. */
+      /*overflow-x: hidden;*/
+  }
+  
+  /* Wrapper for page content to push down footer */
+  #wrap {
+      min-height: 100%;
+      height: auto !important;
+      height: 100%;
+      /* Negative indent footer by it's height */
+      margin: 0 auto -120px;
+  }
+  
+  /* Set the fixed height of the footer here */
+  #push,
+  #footer {
+      height: 120px;
+  }
+  
+  #footer {
+    text-align: center;
+  }
+  
+  /* Top level subheader elements.  These are the first nested items underneath a header element. */
+  .header li {
+    font-size: 20px;
+  }
+  
+  /* Makes the font smaller for all subheader elements. */
+  .sub-header li {
+      font-size: 12px;
+  }
+  
+  button.thumbnails {
+    margin-left:0px;
+  }
+  
+  /*
+   * Side navigation
+   *
+   * Scrollspy and affixed enhanced navigation to highlight sections and secondary
+   * sections of docs content.
+   */
+  
+  /* By default it's not affixed in mobile views, so undo that */
+  .sidebar.affix {
+    position: static;
+  }
+  
+  /* First level of nav */
+  .sidenav {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding-top:    10px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+  }
+  
+  /* All levels of nav */
+  .sidebar .nav > li > a {
+    display: block;
+    padding: 5px 20px;
+  }
+  .sidebar .nav > li > a:hover,
+  .sidebar .nav > li > a:focus {
+    text-decoration: none;
+    border-right: 1px solid;
+  }
+  .sidebar .nav > .active > a,
+  .sidebar .nav > .active:hover > a,
+  .sidebar .nav > .active:focus > a {
+    font-weight: bold;
+    background-color: transparent;
+    border-right: 1px solid;
+  }
+  
+  /* Nav: second level (shown on .active) */
+  .sidebar .nav .nav {
+    display: none; /* Hide by default, but at >768px, show it */
+    margin-bottom: 8px;
+  }
+  .sidebar .nav .nav > li > a {
+    padding-top:    3px;
+    padding-bottom: 3px;
+    padding-left: 30px;
+    font-size: 90%;
+  }
+  
+  .sidebar .nav .nav .nav > li > a {
+    padding-left: 40px;
+  }
+  .sidebar .nav .nav .nav .nav > li > a {
+    padding-left: 50px;
+  }
+  
+  /* Show and affix the side nav when space allows it */
+  @media screen and (min-width: 992px) {
+    .sidebar .nav > .active > ul {
+      display: block;
+    }
+    /* Widen the fixed sidebar */
+    .sidebar.affix,
+    .sidebar.affix-bottom {
+      width: 213px;
+    }
+    .sidebar.affix-top,
+    .sidebar.affix {
+      position: fixed; /* Undo the static from mobile first approach */
+      top: 30px;
+    }
+    .sidebar.affix-bottom {
+      position: absolute; /* Undo the static from mobile first approach */
+    }
+    .sidebar.affix-bottom .sidenav,
+    .sidebar.affix .sidenav {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+  @media screen and (min-width: 1200px) {
+    /* Widen the fixed sidebar again */
+    .sidebar.affix-bottom,
+    .sidebar.affix {
+      width: 263px;
+    }
+  }
+  
+  #toc {
+    padding: 10px 0px;
+    margin:0;
+    border:0;
+  }
+  
+  
+  .panel pre {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  button + pre {
+    margin: 0;
+    padding: 0;
+  }
+  pre code {
+    border-radius: 0;
+  }
+  /* Magnific Popup CSS */
+  .mfp-bg {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1042;
+    overflow: hidden;
+    position: fixed;
+    background: #0b0b0b;
+    opacity: 0.8;
+    filter: alpha(opacity=80); }
+  
+  .mfp-wrap {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1043;
+    position: fixed;
+    outline: none !important;
+    -webkit-backface-visibility: hidden; }
+  
+  .mfp-container {
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    padding: 0 8px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box; }
+  
+  .mfp-container:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle; }
+  
+  .mfp-align-top .mfp-container:before {
+    display: none; }
+  
+  .mfp-content {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 auto;
+    text-align: left;
+    z-index: 1045; }
+  
+  .mfp-inline-holder .mfp-content,
+  .mfp-ajax-holder .mfp-content {
+    width: 100%;
+    cursor: auto; }
+  
+  .mfp-ajax-cur {
+    cursor: progress; }
+  
+  .mfp-zoom-out-cur,
+  .mfp-zoom-out-cur .mfp-image-holder .mfp-close {
+    cursor: -moz-zoom-out;
+    cursor: -webkit-zoom-out;
+    cursor: zoom-out; }
+  
+  .mfp-zoom {
+    cursor: pointer;
+    cursor: -webkit-zoom-in;
+    cursor: -moz-zoom-in;
+    cursor: zoom-in; }
+  
+  .mfp-auto-cursor .mfp-content {
+    cursor: auto; }
+  
+  .mfp-close,
+  .mfp-arrow,
+  .mfp-preloader,
+  .mfp-counter {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none; }
+  
+  .mfp-loading.mfp-figure {
+    display: none; }
+  
+  .mfp-hide {
+    display: none !important; }
+  
+  .mfp-preloader {
+    color: #cccccc;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    text-align: center;
+    margin-top: -0.8em;
+    left: 8px;
+    right: 8px;
+    z-index: 1044; }
+  
+  .mfp-preloader a {
+    color: #cccccc; }
+  
+  .mfp-preloader a:hover {
+    color: white; }
+  
+  .mfp-s-ready .mfp-preloader {
+    display: none; }
+  
+  .mfp-s-error .mfp-content {
+    display: none; }
+  
+  button.mfp-close,
+  button.mfp-arrow {
+    overflow: visible;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    display: block;
+    padding: 0;
+    z-index: 1046;
+    -webkit-box-shadow: none;
+    box-shadow: none; }
+  
+  button::-moz-focus-inner {
+    padding: 0;
+    border: 0; }
+  
+  .mfp-close {
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    text-decoration: none;
+    text-align: center;
+    opacity: 0.65;
+    padding: 0 0 18px 10px;
+    color: white;
+    font-style: normal;
+    font-size: 28px;
+    font-family: Arial, Baskerville, monospace; }
+    .mfp-close:hover, .mfp-close:focus {
+      opacity: 1; }
+    .mfp-close:active {
+      top: 1px; }
+  
+  .mfp-close-btn-in .mfp-close {
+    color: #333333; }
+  
+  .mfp-image-holder .mfp-close,
+  .mfp-iframe-holder .mfp-close {
+    color: white;
+    right: -6px;
+    text-align: right;
+    padding-right: 6px;
+    width: 100%; }
+  
+  .mfp-counter {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #cccccc;
+    font-size: 12px;
+    line-height: 18px; }
+  
+  .mfp-arrow {
+    position: absolute;
+    opacity: 0.65;
+    margin: 0;
+    top: 50%;
+    margin-top: -55px;
+    padding: 0;
+    width: 90px;
+    height: 110px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
+  
+  .mfp-arrow:active {
+    margin-top: -54px; }
+  
+  .mfp-arrow:hover,
+  .mfp-arrow:focus {
+    opacity: 1; }
+  
+  .mfp-arrow:before, .mfp-arrow:after,
+  .mfp-arrow .mfp-b,
+  .mfp-arrow .mfp-a {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin-top: 35px;
+    margin-left: 35px;
+    border: medium inset transparent; }
+  .mfp-arrow:after,
+  .mfp-arrow .mfp-a {
+    border-top-width: 13px;
+    border-bottom-width: 13px;
+    top: 8px; }
+  .mfp-arrow:before,
+  .mfp-arrow .mfp-b {
+    border-top-width: 21px;
+    border-bottom-width: 21px; }
+  
+  .mfp-arrow-left {
+    left: 0; }
+    .mfp-arrow-left:after,
+    .mfp-arrow-left .mfp-a {
+      border-right: 17px solid white;
+      margin-left: 31px; }
+    .mfp-arrow-left:before,
+    .mfp-arrow-left .mfp-b {
+      margin-left: 25px;
+      border-right: 27px solid #3f3f3f; }
+  
+  .mfp-arrow-right {
+    right: 0; }
+    .mfp-arrow-right:after,
+    .mfp-arrow-right .mfp-a {
+      border-left: 17px solid white;
+      margin-left: 39px; }
+    .mfp-arrow-right:before,
+    .mfp-arrow-right .mfp-b {
+      border-left: 27px solid #3f3f3f; }
+  
+  .mfp-iframe-holder {
+    padding-top: 40px;
+    padding-bottom: 40px; }
+  
+  .mfp-iframe-holder .mfp-content {
+    line-height: 0;
+    width: 100%;
+    max-width: 900px; }
+  
+  .mfp-iframe-scaler {
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    padding-top: 56.25%; }
+  
+  .mfp-iframe-scaler iframe {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    background: black; }
+  
+  .mfp-iframe-holder .mfp-close {
+    top: -40px; }
+  
+  /* Main image in popup */
+  img.mfp-img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    line-height: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 40px 0 40px;
+    margin: 0 auto; }
+  
+  /* The shadow behind the image */
+  .mfp-figure:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 40px;
+    bottom: 40px;
+    display: block;
+    right: 0;
+    width: auto;
+    height: auto;
+    z-index: -1;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    background: #444444; }
+  
+  .mfp-figure {
+    line-height: 0; }
+  
+  .mfp-bottom-bar {
+    margin-top: -36px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    cursor: auto; }
+  
+  .mfp-title {
+    text-align: left;
+    line-height: 18px;
+    color: #f3f3f3;
+    word-wrap: break-word;
+    padding-right: 36px; }
+  
+  .mfp-figure small {
+    color: #bdbdbd;
+    display: block;
+    font-size: 12px;
+    line-height: 14px; }
+  
+  .mfp-image-holder .mfp-content {
+    max-width: 100%; }
+  
+  .mfp-gallery .mfp-image-holder .mfp-figure {
+    cursor: pointer; }
+  
+  @media screen and (max-width: 800px) and (orientation: landscape), screen and (max-height: 300px) {
+    /**
+     * Remove all paddings around the image on small screen
+     */
+    .mfp-img-mobile .mfp-image-holder {
+      padding-left: 0;
+      padding-right: 0; }
+  
+    .mfp-img-mobile img.mfp-img {
+      padding: 0; }
+  
+    /* The shadow behind the image */
+    .mfp-img-mobile .mfp-figure:after {
+      top: 0;
+      bottom: 0; }
+  
+    .mfp-img-mobile .mfp-bottom-bar {
+      background: rgba(0, 0, 0, 0.6);
+      bottom: 0;
+      margin: 0;
+      top: auto;
+      padding: 3px 5px;
+      position: fixed;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box; }
+  
+    .mfp-img-mobile .mfp-bottom-bar:empty {
+      padding: 0; }
+  
+    .mfp-img-mobile .mfp-counter {
+      right: 5px;
+      top: 3px; }
+  
+    .mfp-img-mobile .mfp-close {
+      top: 0;
+      right: 0;
+      width: 35px;
+      height: 35px;
+      line-height: 35px;
+      background: rgba(0, 0, 0, 0.6);
+      position: fixed;
+      text-align: center;
+      padding: 0; }
+  
+    .mfp-img-mobile .mfp-figure small {
+      display: inline;
+      margin-left: 5px; } }
+  @media all and (max-width: 900px) {
+    .mfp-arrow {
+      -webkit-transform: scale(0.75);
+      transform: scale(0.75); }
+  
+    .mfp-arrow-left {
+      -webkit-transform-origin: 0;
+      transform-origin: 0; }
+  
+    .mfp-arrow-right {
+      -webkit-transform-origin: 100%;
+      transform-origin: 100%; }
+  
+    .mfp-container {
+      padding-left: 6px;
+      padding-right: 6px; } }
+  .mfp-ie7 .mfp-img {
+    padding: 0; }
+  .mfp-ie7 .mfp-bottom-bar {
+    width: 600px;
+    left: 50%;
+    margin-left: -300px;
+    margin-top: 5px;
+    padding-bottom: 5px; }
+  .mfp-ie7 .mfp-container {
+    padding: 0; }
+  .mfp-ie7 .mfp-content {
+    padding-top: 44px; }
+  .mfp-ie7 .mfp-close {
+    top: 0;
+    right: 0;
+    padding-top: 0; }
+  
+  //Magnific overrides
+  .mfp-image img{
+    background: white;
+  }
+  .mfp-figure:after {
+    background: white;
+  }
+  
+  /*
+   * Off Canvas navbar toggle right
+   * --------------------------------------------------
+   */
+  
+  @media screen and (max-width: 768px) {
+    .row-offcanvas .collapsing {
+    -webkit-transition: none 0;
+      -moz-transition: none 0;
+      transition: none 0;
+    }
+   .row-offcanvas .navbar {
+    position: absolute;
+    z-index: 2;
+      right:0;
+      height:100%;
+      width:55px;
+      border:0;
+      background-color:transparent;
+    }
+    .row-offcanvas .navbar-toggle {
+      margin-right: 5px;
+      margin-left: 5px;
+    }
+    .row-offcanvas {
+      position: relative;
+    }
+    .row-offcanvas-right.active .navbar {
+    position: absolute;
+    z-index: 2;
+      right: -28.4%;
+      width:40%;
+      background-color:#eee;
+      border:0 solid #ddd;
+      border-left-width:1px;
+    }
+    .row-offcanvas-right.active {
+      left: -30%;
+    }
+    .row-offcanvas-right.active .navbar-collapse {
+      position: relative;
+      width: 100%;
+    }
+    .row-offcanvas .content {
+    /*width:calc(100% - 60px);*/
+    }
+  }
+  </style>
+<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+<body><div id="MathJax_Message" style="display: none;"></div>
+<div id="header">
+<h1 class="title">Systematic Review with Active Learning</h1>
+</div>
+<title>
+Systematic Review with Active Learning
+</title>
+<div id="wrap">
+<div class="container">
+<div class="row row-offcanvas row-offcanvas-right">
+<div class="contents col-xs-12 col-md-10">
+<h1 id="Introduction">Introduction</h1>
+<p>The main goal of this document is to introduce systematic reviews, 
+explain why they are useful and present a workflow to conduct systematic
+ review with the help of an active learning system.</p>
+<h1 id="What_is_a_systematic_review_or_meta_analysis_">What is a systematic review or meta-analysis?</h1>
+<blockquote>
+<p>Systematic literature reviews are a method of making sense of large 
+bodies of information, and a means of contributing to the answers to 
+questions about what works and what does not – and many other types of 
+question too. They are a method of mapping out areas of uncertainty, and
+ identifying where little or no relevant research has been done, but 
+where new studies are needed.</p>
+</blockquote>
+<blockquote>
+<p>Systematic reviews also flag up areas where spurious certainty 
+abounds. These are areas where we think we know more than we do, but 
+where in reality there is little convincing evidence to support our 
+beliefs.</p>
+</blockquote>
+<p><a href="https://doi.org/10.1002/9780470754887">Petticew &amp; Roberts, 2005, pp.&nbsp;2</a></p>
+<h2 id="Systematic_review_vs_meta_analysis_vs_Narrative_review">Systematic review vs meta-analysis vs Narrative review</h2>
+<blockquote>
+<p>A systematic review answers strives to comprehensively identify, 
+appraise, and synthesize all the relevant studies on a given topic. 
+Systematic reviews are often used to test just a single hypothesis, or a
+ series of related hypotheses.</p>
+</blockquote>
+<blockquote>
+<p>A meta-analysis uses a specific statistical technique for 
+synthesizing the results of several studies into a single quantitative 
+estimate (i.e., a summary effect size).</p>
+</blockquote>
+<blockquote>
+<p>A narrative review is the process of synthesizing primary studies and
+ exploring heterogeneity descriptively, rather than statistically.</p>
+</blockquote>
+<p><a href="https://doi.org/10.1002/9780470754887">Petticew &amp; Roberts, 2005, pp.&nbsp;19</a></p>
+<h2 id="Why_do_a_systematic_review_">Why do a systematic review?</h2>
+<p>It is a fair criticism of scientific research that it is often difficult to know which, if any, study to believe.</p>
+<blockquote>
+<p>Newton’s Third Law of Motion: ‘‘For every expert there is an equal and opposite expert.’’</p>
+</blockquote>
+<p>The traditional scientific approach to this problem is to carry out a literature review.</p>
+<p>However, traditional literature reviews frequently summarize highly 
+unrepresentative samples of studies in an unsystematic and uncritical 
+fashion.</p>
+<p>But the problem is not just one of inconsistency, but one of information overload.</p>
+<p>The massive expansion of research output, both in peer-reviewed 
+publications, and unpublished, e.g.&nbsp;in conference presentations or 
+symposia, mean it is difficult to establish what work has been done in 
+your area already, and to ensure that knowledge keeps up to date with 
+the best research evidence.</p>
+<h2 id="The_role_of_Systematic_Literature_reviews">The role of Systematic Literature reviews</h2>
+<p>Systematic reviews are literature reviews that adhere closely to a 
+set of scientific methods that explicitly aim to limit systematic error 
+(bias), mainly by attempting to identify, appraise and synthesize all 
+relevant studies (of whatever design) in order to answer a particular 
+question (or set of questions).</p>
+<p>Systematic review will be most useful when:</p>
+<p>• there is a clear and defined research question</p>
+<p>• several empirical studies have been published</p>
+<p>• there is uncertainty about the results</p>
+<h1 id="Tutorial__My_first_systematic_review_with_active_learning">Tutorial: My first systematic review with active learning</h1>
+<p>A systematic review needs a detailed protocol that describes how the 
+review will be processed and methods that will be applied. There are 
+several published examples of such protocols. Here we follow the 
+protocol suggested by <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6148622/">Bramer et al.&nbsp;(2018)</a> which consists on the following steps:</p>
+<ol style="list-style-type: decimal">
+<li><p>Determine a clear and focused question</p></li>
+<li><p>Describe the articles that can answer the question</p></li>
+<li><p>Decide which key concepts address the different elements of the question</p></li>
+<li><p>Decide which elements should be used for the best results</p></li>
+<li><p>Choose an appropriate database and interface to start with</p></li>
+<li><p>Document the search process in a text document</p></li>
+<li><p>Identify appropriate index terms in the thesaurus of the first database</p></li>
+<li><p>Identify synonyms in the thesaurus</p></li>
+<li><p>Add variations in search terms</p></li>
+<li><p>Use database-appropriate syntax, with parentheses, Boolean operators, and field codes</p></li>
+<li><p>Optimize the search</p></li>
+<li><p>Evaluate the initial results</p></li>
+<li><p>Check for errors</p></li>
+<li><p>Translate to other databases</p></li>
+<li><p>Test and reiterate</p></li>
+</ol>
+<p>Note: This tutorial will not follow through with an exhaustive 
+account of each of these steps. Instead, a shortened version of this 
+list will presented and discussed.</p>
+<h2 id="Determine_a_clear_and_focused_question">Determine a clear and focused question</h2>
+<p>For the sake of this exercise, the aim is to answer the following question:</p>
+<blockquote>
+<p>What factors explain interview duration in computer assisted telephone surveys?</p>
+</blockquote>
+<h2 id="Describe_the_articles_that_can_answer_the_question">Describe the articles that can answer the question</h2>
+<p>Research articles that collect and analize interview duration with CATI survey data.</p>
+<h2 id="What_are_the_research_question_key_concepts_">What are the research question key concepts?</h2>
+<ul>
+<li><p>Survey</p></li>
+<li><p>telephone</p></li>
+<li><p>Interview duration</p></li>
+</ul>
+<h2 id="Choose_the_database">Choose the database</h2>
+<p>There is a very long list of <a href="https://en.wikipedia.org/wiki/List_of_academic_databases_and_search_engines">academic databases and search engines</a>.</p>
+<blockquote>
+<p>How do you choose?</p>
+</blockquote>
+<p>In addition to any specific requirements which might come from the 
+specificity of the research question (e.g.&nbsp;medical trials have 
+dedicated databases), recent research by <a href="https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1378">Gusenbauer and Haddaway (2019</a>) suggests the following databases:</p>
+<ul>
+<li><a href="https://dl.acm.org/">ACM Digital Library</a></li>
+<li><a href="https://www.base-search.net/">BASE</a></li>
+<li><a href="https://www.clinicaltrials.gov/">ClinicalTrials.gov</a></li>
+<li><a href="https://www.cochranelibrary.com/">Cochrane Library</a></li>
+<li><a href="https://www.ebsco.com/products/research-databases">EbscoHost</a> (tested for ERIC, Medline, EconLit, CINHAL Plus, SportsDiscus)</li>
+<li><a href="https://www.ovid.com/">OVID</a> (tested for Embase, Embase Classic, PsychINFO)</li>
+<li><a href="https://www.proquest.com/index">ProQuest</a> (tested for Nursing &amp; Allied Health Database, Public Health Database)</li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/">PubMed</a></li>
+<li><a href="https://www.sciencedirect.com/">ScienceDirect</a></li>
+<li><a href="https://scopus.com/">Scopus</a></li>
+<li><a href="https://trid.trb.org/">TRID</a></li>
+<li><a href="https://www.who.int/chp/knowledge/vhl/en/">Virtual Health Library</a></li>
+<li><a href="https://webofknowledge.com/WOS">Web of Science</a> (tested for Web of Science Core Collection, Medline)</li>
+<li><a href="https://onlinelibrary.wiley.com/">Wiley Online Library</a></li>
+</ul>
+<p><strong><a href="https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1378">Gusenbauer and Haddaway (2019</a>)
+ further suggest that systems such as Google scholar, have severe 
+performance limitations and should only be considered supplementary to 
+these latter databases, especially for non-query‐based search methods 
+where they might still provide great benefit.</strong></p>
+<hr>
+<p>For the sake of this exercise, we go with the <a href="https://www.webofknowledge.com/">Web of Science Core Collection</a></p>
+<h2 id="Document_the_search_process">Document the search process</h2>
+<p>Keep an log of the all the steps taken to make the search reproducible.</p>
+<h2 id="Identify_appropriate_index_terms_and_identify_synonyms">Identify appropriate index terms and identify synonyms</h2>
+<p>The initial terms we identify are the following:</p>
+<ul>
+<li>duration</li>
+<li>telephone</li>
+<li>Survey</li>
+</ul>
+<h2 id="Add_variations_in_search_terms__truncation__spelling_differences__abbreviations__opposites_">Add variations in search terms (truncation, spelling differences, abbreviations, opposites)</h2>
+<ul>
+<li>timestamps</li>
+<li>interview lenght</li>
+<li>CATI</li>
+</ul>
+<h2 id="Use_database_appropriate_syntax">Use database appropriate syntax</h2>
+<p>Check the <a href="http://images.webofknowledge.com/WOKRS535R100/help/WOS/hp_advanced_search.html">advance search</a> help menu of WoS</p>
+<p>The start of our query will be the following:</p>
+<blockquote>
+<p>ALL=(survey AND telephone AND duration)</p>
+</blockquote>
+<p><img src="Systematic%20Review%20with%20Active%20Learning-Dateien/optimize.png" alt="Select language and document type"></p>
+<h2 id="Optimize_the_search">Optimize the search</h2>
+<blockquote>
+<p>We can start delimiting and optimizing our search by, for example, selecting the language and the type of documents.</p>
+</blockquote>
+<p><img src="Systematic%20Review%20with%20Active%20Learning-Dateien/optimize2.png" alt="Results"></p>
+<p>Next we can add the synonyms we previously identified.</p>
+<blockquote>
+<p>ALL=(survey OR surveys) AND ALL=(telephone OR CATI) AND ALL=(duration OR length OR timestamps)</p>
+</blockquote>
+<p><img src="Systematic%20Review%20with%20Active%20Learning-Dateien/optimize3.png" alt="Add synonyms"></p>
+<h2 id="Extend_this_query_to_other_databases">Extend this query to other databases</h2>
+<p>Extend this query to other databases fitting your research question.</p>
+<h1 id="Evaluting_the_data_collected">Evaluting the data collected</h1>
+<p>So now we got the data and we have 1227 entries. Do we have to read all this papers?</p>
+<blockquote>
+<p>Short answer: yes.</p>
+</blockquote>
+<p>However, we can look for the help of more systematized methods to reduce the number of papers we actually have to read.</p>
+<h2 id="Presenting_the_ASReview">Presenting the ASReview</h2>
+<p><a href="https://asreview.nl/">ASReview</a> enables you to screen 
+more texts than the traditional way of screening in the same amount of 
+time. Which means that you can achieve a higher quality than when you 
+would have used the traditional approach.</p>
+<p>Detailed information regarding how to install and the data format can be found in the <a href="https://asreview.nl/">website</a>.</p>
+<p><video src="Systematic%20Review%20with%20Active%20Learning-Dateien/asreview.mp4" controls="controls"><a href="file:///C:/Users/ba8uj7/Documents/Systematic_review/asreview.mp4">graph)</a></video></p>
+<p>Source: <a href="https://twitter.com/LGTummers/status/1326153384710168576">Here</a></p>
+<h2 id="Example__using_the_ASreview">Example: using the ASreview</h2>
+<blockquote>
+<p>After compiling the results of the systematic review to a .ris format file we can introduce it to ASreview.</p>
+</blockquote>
+<p><img src="Systematic%20Review%20with%20Active%20Learning-Dateien/asreview1.png" alt="ASreview"></p>
+<blockquote>
+<p>Then we must set the priors to train the active learning system. This
+ is done by looking at the abstracts and selecting the ones that are 
+relevant or irrelevant to our research question.</p>
+</blockquote>
+<p><img src="Systematic%20Review%20with%20Active%20Learning-Dateien/asreview2.png" alt="Relevant"></p>
+<p><img src="Systematic%20Review%20with%20Active%20Learning-Dateien/asreview3.png" alt="Relevant"></p>
+<blockquote>
+<p>After classifying some documents (the more, the better) we can select
+ the model of our preference. More information about the specificites of
+ each of this models can be found in the ASreview website.</p>
+</blockquote>
+<p><img src="Systematic%20Review%20with%20Active%20Learning-Dateien/asreview4.png" alt="Learning Model"></p>
+<p><img src="Systematic%20Review%20with%20Active%20Learning-Dateien/asreview5.png" alt="Statistics"></p>
+<h1 id="Final_document">Final document</h1>
+<blockquote>
+<p>Final results of our active learning systematic review. All 1227 are 
+now ranked by relevance following the priors we set in the active 
+learning model.</p>
+</blockquote>
+<p><img src="Systematic%20Review%20with%20Active%20Learning-Dateien/excel1.png" alt="Excel"></p>
+<div class="row">
+
+</div>
+<div class="row">
+<button class="source R toggle btn btn-xs btn-primary">
+<span class="glyphicon glyphicon-chevron-down"></span> R source
+</button>
+<pre style=""><code class="source r">kable(head(df))</code></pre>
+<table class="table table-striped table-bordered table-hover table-condensed">
+<colgroup>
+<col width="0%">
+<col width="0%">
+<col width="6%">
+<col width="3%">
+<col width="0%">
+<col width="3%">
+<col width="0%">
+<col width="0%">
+<col width="1%">
+<col width="77%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+<col width="0%">
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">record_id</th>
+<th align="left">type_of_reference</th>
+<th align="left">primary_title</th>
+<th align="left">first_authors</th>
+<th align="left">publication_year</th>
+<th align="left">alternate_title3</th>
+<th align="left">volume</th>
+<th align="left">number</th>
+<th align="left">doi</th>
+<th align="left">abstract</th>
+<th align="left">publisher</th>
+<th align="left">start_page</th>
+<th align="left">end_page</th>
+<th align="left">notes</th>
+<th align="left">url</th>
+<th align="left">tertiary_title</th>
+<th align="left">issn</th>
+<th align="right">final_included</th>
+<th align="right">asreview_ranking</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">170</td>
+<td align="left">JOUR</td>
+<td align="left">Occupation coding during the interview</td>
+<td align="left">Schierholz, Malte, Gensicke, Miriam, Tschersich, Nikolai, Kreuter, Frauke</td>
+<td align="left">2018/02//</td>
+<td align="left">JOURNAL OF THE ROYAL STATISTICAL SOCIETY SERIES A-STATISTICS IN SOCIETY</td>
+<td align="left">181</td>
+<td align="left">2</td>
+<td align="left">10.1111/rssa.12297</td>
+<td align="left">Currently, most surveys ask for occupation with 
+open-ended questions. The verbal responses are coded afterwards, which 
+is error prone and expensive. We present an alternative approach that 
+allows occupation coding during the interview. Our new technique uses a 
+supervised learning algorithm to predict candidate job categories. These
+ suggestions are presented to the respondent, who in turn can choose the
+ most appropriate occupation. 72.4% of the respondents selected an 
+occupation when the new instrument was tested in a telephone survey, 
+entailing potential cost savings. To aid further improvements, we 
+identify some factors for how to increase quality and to reduce 
+interview duration.</td>
+<td align="left">NA</td>
+<td align="left">379</td>
+<td align="left">407</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">627</td>
+<td align="left">JOUR</td>
+<td align="left">Comparison of Cell Phone and Landline Surveys: A Design Perspective</td>
+<td align="left">Carley-Baxter, Lisa R, Peytchev, Andy, Black, Michele C</td>
+<td align="left">2010/02//</td>
+<td align="left">FIELD METHODS</td>
+<td align="left">22</td>
+<td align="left">1</td>
+<td align="left">10.1177/1525822X09360310</td>
+<td align="left">Rapidly decreasing coverage of landline surveys is 
+increasing the need to implement dual-frame surveys for inference to the
+ adult U.S. population. Vast differences between the way cell phones and
+ landlines are used, and the populations using them, require separate 
+data collection designs. Yet research comparing cell phone surveys to 
+landline telephone surveys is scarce with respect to operational 
+outcomes. The authors test hypothesized differences between cell phone 
+and landline interviewing through experiments on survey topic and length
+ and find that these factors may not have the same impact in cell phone 
+surveys. To help optimize calling cell phone numbers in future studies, 
+the authors present self-reported cell phone use patterns and other 
+factors affecting the probability of contact and sampling design. To 
+inform the inclusion of adults with both a cell and landline phone, they
+ compare cell phone use among cell phone only and cell with landline 
+cases. The authors found notable differences between the cell only and 
+cell with landline respondents in terms of cell phone use. Implications 
+and directions for future work are discussed.</td>
+<td align="left">NA</td>
+<td align="left">3</td>
+<td align="left">15</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">787</td>
+<td align="left">JOUR</td>
+<td align="left">Sampling telephone numbers and adults, interview 
+length, and weighting in the California Health Interview Survey cell 
+phone pilot study</td>
+<td align="left">Brick, J Michael, Edwards, W Sherman, Lee, Sunghee</td>
+<td align="left">2007///</td>
+<td align="left">PUBLIC OPINION QUARTERLY</td>
+<td align="left">71</td>
+<td align="left">5</td>
+<td align="left">10.1093/poq/nfm052</td>
+<td align="left">This article describes several features included in a 
+California Health Interview Survey cell phone pilot study that differ 
+from earlier cell phone surveys conducted in the United States. One 
+difference is that the study used a screening design and only adults 
+living in cell-only households were interviewed. Most of the previous 
+studies used dual frame designs. Another difference was the development 
+and implementation of a within-household adult sampling procedure to 
+cover adults when cell phones were shared in the household. The study 
+was also intended to determine if conducting a cell phone interview of 
+the same scope and length as a regular telephone interview was feasible.
+ Most previous surveys were focused on cell phone topics and were 
+shorter than the comparable landline surveys. We then explore some 
+interesting problems that arise in weighting a cell phone survey using a
+ screening design. We conclude with a discussion of planning a new cell 
+phone survey in 2007 that incorporates findings from this study.</td>
+<td align="left">NA</td>
+<td align="left">793</td>
+<td align="left">813</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">1</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">258</td>
+<td align="left">JOUR</td>
+<td align="left">Questionnaire survey to assess the pattern and characteristics of cell-phone usage among Indian oncologists</td>
+<td align="left">Munshi, Anusheel, Dutta, Debanarayan, Tike, Pramod, Agarwal, Jai Prakash</td>
+<td align="left">2016///</td>
+<td align="left">JOURNAL OF CANCER RESEARCH AND THERAPEUTICS</td>
+<td align="left">12</td>
+<td align="left">3</td>
+<td align="left">10.4103/0973-1482.164704</td>
+<td align="left">Purpose: Obtain baseline data of cell-phone usage in 
+the medical (MO), surgical (SO) and radiation (RO) oncology community 
+practicing in India. Materials and Methods: Indigenously prepared 
+cell-phone usage related questionnaire was used in the present study 
+after approval by the Institutional Ethics/Scientific Committees. The 
+questionnaire had 41 items and was made to assess the cell-phone usage 
+parameters, utility in clinical practice, awareness, and to compare 
+parameters between oncology specialties. Between November 2009 and 
+January 2010, the questionnaire was sent as an E-mail attachment to 200 
+oncologists in India. Results: In all, 123 responses were received (61% 
+responders); 84 (68.3%) were RO. The median age of responders was 35 
+years. Overall, 80% felt handicapped without cell-phone. The Mean 
+cell-phone score, an index to assess overall usefulness over a score of 
+1-10, was 6.46 (median 7, standard deviation 1.709). There was no 
+significant difference between RO, MO and SO in duration of usage (P= 
+0.235), number of cell-phones (P= 0.496), call duration per day (P= 
+0.490) and dependence on cell-phone (P= 0.574). Age of starting 
+cell-phone usage was earlier in RO (P= 0.086). Professional usage was 
+significantly more by MO and SO compared to RO (P &lt; 0.001); however, 
+the former were less aware of any potential cell-phone hazards compared 
+to RO (P &lt; 0.007). Conclusion: The results of the first such 
+questionnaire based study have been presented. Most oncologists consider
+ cell-phones a useful tool in patient care. More RO are aware of 
+potential cell-phone hazards compared to non-RO’s.</td>
+<td align="left">NA</td>
+<td align="left">1138</td>
+<td align="left">1143</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="right">155</td>
+<td align="left">JOUR</td>
+<td align="left">Public Attitudes Toward the Police: Findings From a Dual-Frame Telephone Survey</td>
+<td align="left">He, Ni (Phil), Ren, Ling, Zhao, Jihong (Solomon), Bills, Matthew A</td>
+<td align="left">2018/05//</td>
+<td align="left">INTERNATIONAL JOURNAL OF OFFENDER THERAPY AND COMPARATIVE CRIMINOLOGY</td>
+<td align="left">62</td>
+<td align="left">7</td>
+<td align="left">10.1177/0306624X17690722</td>
+<td align="left">Using telephone survey data collected in Houston, 
+Texas, this study explores the feasibility of a dual-frame (landline and
+ cell-phone-only household samples) design survey in police studies and 
+compares the corresponding characteristics of survey respondents and 
+multiple measures of citizens’ attitudes toward the police. It was found
+ that a cell-phone interview with the same scope and length of a 
+landline interview is indeed operationally feasible, albeit at higher 
+cost and lower response rate. Compared with their landline counterparts,
+ respondents in our cell-phone-only sample are younger, males, members 
+of ethnic minority, renters, mobile, and less educated. No appreciable 
+attitudinal differences among the respondents are observed between the 
+two samples. In addition, substantive outcomes from multivariate 
+regression models do not seem to be impacted by the types of phones 
+used. Implications for future studies are included.</td>
+<td align="left">NA</td>
+<td align="left">1992</td>
+<td align="left">2015</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="right">141</td>
+<td align="left">JOUR</td>
+<td align="left">WHY DO CELL PHONE INTERVIEWS LAST LONGER? A BEHAVIOR CODING PERSPECTIVE</td>
+<td align="left">Timbrook, Jerry, Olson, Kristen, Smyth, Jolene D</td>
+<td align="left">2018///</td>
+<td align="left">PUBLIC OPINION QUARTERLY</td>
+<td align="left">82</td>
+<td align="left">3</td>
+<td align="left">10.1093/poq/nfy022</td>
+<td align="left">Why do telephone interviews last longer on cell phones 
+than landline phones? Common explanations for this phenomenon include 
+differential selection into subsets of questions, activities outside the
+ question-answer sequence (such as collecting contact information for 
+cell-minute reimbursement), respondent characteristics, behaviors 
+indicating disruption to respondents’ perception and comprehension, and 
+behaviors indicating interviewer reactions to disruption. We find that 
+the time difference persists even when we focus only on the 
+question-answer portion of the interview and only on shared questions 
+(i.e., eliminating the first two explanations above). To learn why the 
+difference persists, we use behavior codes from the U.S./Japan Newspaper
+ Opinion Poll, a dual-frame telephone survey of US adults, to examine 
+indicators of satisficing, line-quality issues, and distraction. 
+Overall, we find that respondents on cell phones are more disrupted, and
+ that the difference in interview duration occurs because cell phone 
+respondents take longer to provide acceptable answers. Interviewers also
+ slow their speed of speech when asking questions. A slower speaking 
+rate from both actors results in a longer and more expensive interview 
+when respondents use cell phones.</td>
+<td align="left">NA</td>
+<td align="left">553</td>
+<td align="left">582</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">6</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="Further_information">Further information</h1>
+<p>How to report systematic review and metanalyses?</p>
+<p><a href="https://www.prisma-statement.org/">PRISMA</a></p>
+</div>
+<div class="col-md-2"><div id="toc" class="well sidebar sidenav affix hidden-print"><ul class="nav"><li class="active"><a href="#Introduction">Introduction</a></li><li><a href="#What_is_a_systematic_review_or_meta_analysis_">What is a systematic review or meta-analysis?</a><ul class="nav"><li><a href="#Systematic_review_vs_meta_analysis_vs_Narrative_review">Systematic review vs meta-analysis vs Narrative review</a></li><li><a href="#Why_do_a_systematic_review_">Why do a systematic review?</a></li><li><a href="#The_role_of_Systematic_Literature_reviews">The role of Systematic Literature reviews</a></li></ul></li><li><a href="#Tutorial__My_first_systematic_review_with_active_learning">Tutorial: My first systematic review with active learning</a><ul class="nav"><li><a href="#Determine_a_clear_and_focused_question">Determine a clear and focused question</a></li><li><a href="#Describe_the_articles_that_can_answer_the_question">Describe the articles that can answer the question</a></li><li><a href="#What_are_the_research_question_key_concepts_">What are the research question key concepts?</a></li><li><a href="#Choose_the_database">Choose the database</a></li><li><a href="#Document_the_search_process">Document the search process</a></li><li><a href="#Identify_appropriate_index_terms_and_identify_synonyms">Identify appropriate index terms and identify synonyms</a></li><li><a href="#Add_variations_in_search_terms__truncation__spelling_differences__abbreviations__opposites_">Add variations in search terms (truncation, spelling differences, abbreviations, opposites)</a></li><li><a href="#Use_database_appropriate_syntax">Use database appropriate syntax</a></li><li><a href="#Optimize_the_search">Optimize the search</a></li><li><a href="#Extend_this_query_to_other_databases">Extend this query to other databases</a></li></ul></li><li><a href="#Evaluting_the_data_collected">Evaluting the data collected</a><ul class="nav"><li><a href="#Presenting_the_ASReview">Presenting the ASReview</a></li><li><a href="#Example__using_the_ASreview">Example: using the ASreview</a></li></ul></li><li><a href="#Final_document">Final document</a></li><li><a href="#Further_information">Further information</a></li></ul></div></div></div>
+<div class="navbar navbar-fixed-bottom navbar-inverse">
+<div class="container">
+<div class="navbar-header">
+<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+</button>
+</div>
+<div id="bottom-navbar" class="navbar-collapse collapse navbar-responsive-collapse">
+<ul class="nav navbar-nav navbar-right">
+<li class="nav">
+<p class="navbar-text">
+Toggle
+</p>
+</li>
+<li class="dropup">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown">Code <b class="caret"></b></a>
+<ul class="dropdown-menu">
+<li class="dropdown-header">
+Languages
+</li>
+<li class="active">
+<a href="#" class="toggle-global source R" type="source.R">R</a>
+</li>
+<li>
+<a href="#" type="all-source" class="toggle-global">All</a>
+</li>
+</ul>
+</li>
+<li class="active">
+<a href="#" type="figure" class="toggle-global">Figures</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="push">
+
+</div>
+<div id="footer">
+<div class="container">
+<p class="text-muted" id="credit">
+Styled with <a href="https://github.com/jimhester/knitrBootstrap">knitrBootstrap</a>
+</p>
+</div>
+</div>
+<link rel="stylesheet" id="theme" href="Systematic%20Review%20with%20Active%20Learning-Dateien/bootstrap.css" media="screen"><link rel="stylesheet" id="highlight" href="Systematic%20Review%20with%20Active%20Learning-Dateien/sunburst.css" media="screen">
+</div>
+
+
+<script>mendeleyWebImporter = { open: function () { window.postMessage('0.3940582346665088', 'null') } }</script></body></html>
