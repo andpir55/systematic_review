@@ -1,7 +1,6 @@
 ---
 title: Systematic Review with Active Learning
 Author: André Pirralha
-keep_md: true
 output: 
  knitrBootstrap::bootstrap_document:
     title: "Systematic Review with Active Learning"
