@@ -192,14 +192,14 @@ The start of our query will be the following:
 
 >We can start delimiting and optimizing our search by, for example, selecting the language and the type of documents.
 
-![Results](./optimize2.png){width=120%}
+![Results](./img/optimize2.png){width=120%}
 
 
 Next we can add the synonyms we previously identified.
 
 >ALL=(survey OR surveys)  AND  ALL=(telephone  OR  CATI)  AND  ALL=(duration  OR  length  OR  timestamps)
 
-![Add synonyms](./optimize3.png){width=120%}
+![Add synonyms](./img/optimize3.png){width=120%}
 
 
 
@@ -222,14 +222,14 @@ However, it is very likely that a high proportion of these entries are actually 
 [ASReview](https://asreview.nl/) enables you to screen more texts than the traditional way of screening in the same amount of time. Which means that you can achieve a higher quality than when you would have used the traditional approach.
 
 
-![Illustration of ASReview](./FlowChart.png){width=70%}
+![Illustration of ASReview](./img/FlowChart.png){width=70%}
 
 
 The following video presents how ASReview helps us gain in efficiency compared to traditional reviews.
 
 
 
-![graph)](./asreview.mp4)
+![graph)](./img/asreview.mp4)
 
 Source: [Here](https://twitter.com/LGTummers/status/1326153384710168576)
 
@@ -242,24 +242,24 @@ Detailed information regarding how to install and other relevant issues can be f
 >After compiling the results of the systematic review to a .ris format file we can introduce it to ASReview.
 
 
-![ASreview](./asreview1.png){width=80%}
+![ASreview](./img/asreview1.png){width=80%}
 
 
 
 >Then we must set the priors to train the active learning system. This is done by looking at the abstracts and selecting the ones that are relevant or irrelevant to our research question.
 
-![Relevant](./asreview2.png){width=80%}
+![Relevant](./img/asreview2.png){width=80%}
 
 
 
 
 
 
-![Relevant](./asreview3.png){width=80%}
+![Relevant](./img/asreview3.png){width=80%}
 
 >After classifying some documents (the more, the better)  we can select the model of our preference. More information about the specificities of each of these training models can be found in the [ASReview](https://asreview.nl/) website.
 
-![Learning Model](./asreview4.png){width=80%}
+![Learning Model](./img/asreview4.png){width=80%}
 
 
 
@@ -273,7 +273,7 @@ Detailed information regarding how to install and other relevant issues can be f
 >In the final results we can see all the 1227 entries of the literature review now ranked by relevance following the priors we set in the active learning model. 
 
 
-![Excel](./excel1.png)
+![Excel](./img/excel1.png)
 
 
 ```{r, echo=FALSE, warning=FALSE}
