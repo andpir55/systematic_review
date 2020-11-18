@@ -1,0 +1,1275 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title>Systematic Review with Active Learning</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- jQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+  
+  <!-- bootstrap -->
+  <!--<link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet"  id="style">-->
+  <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  
+  <!-- highlight.js -->
+  <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/default.min.css" rel="stylesheet" id="code-style">-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js"></script>
+  <script>
+  hljs.LANGUAGES.r=function(a){var b="([a-zA-Z]|\\.[a-zA-Z.])[a-zA-Z0-9._]*";return{c:[a.HCM,{b:b,l:b,k:{keyword:"function if in break next repeat else for return switch while try tryCatch|10 stop warning require library attach detach source setMethod setGeneric setGroupGeneric setClass ...|10",literal:"NULL NA TRUE FALSE T F Inf NaN NA_integer_|10 NA_real_|10 NA_character_|10 NA_complex_|10"},r:0},{cN:"number",b:"0[xX][0-9a-fA-F]+[Li]?\\b",r:0},{cN:"number",b:"\\d+(?:[eE][+\\-]?\\d*)?L\\b",r:0},{cN:"number",b:"\\d+\\.(?!\\d)(?:i\\b)?",r:0},{cN:"number",b:"\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",r:0},{b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[a.BE],r:0},{cN:"string",b:"'",e:"'",c:[a.BE],r:0}]}}(hljs); </script>
+  <!--<script type="text/javascript", src="https://yandex.st/highlightjs/7.3/languages/r.min.js"></script>-->
+  
+  <!-- Manific Popup -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/0.8.9/jquery.magnific-popup.min.js"></script>
+  
+  <script type="text/javascript"
+    src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+  <script defer="defer">
+  // Function to generate the dynamic table of contents
+  jQuery.fn.generate_TOC = function () {
+    var base = $(this[0]);
+  
+    var selectors = ['h1', 'h2', 'h3', 'h4'];
+  
+    var last_ptr = [{}, {}, {}, {}];
+  
+    var anchors = {};
+  
+    generate_anchor = function (text) {
+      var test = text.replace(/\W/g, '_');
+  
+      while(test in anchors){
+        //if no suffix, add one
+        if(test.match(/_\d+$/) === null){
+          test = test + "_2";
+        }
+        //else generate unique id for duplicates by adding one to the suffix
+        else {
+          test = test.replace(/_(\d+)$/, function(match, number){ var num=+number+1; return("_" + num) });
+        }
+      }
+      anchors[test]=1;
+      return(test);
+    }
+  
+    $(selectors.join(',')).filter(function(index) { return $(this).parent().attr("id") != 'header'; }).each(function () {
+  
+      var heading = $(this);
+      var idx = selectors.indexOf(heading.prop('tagName').toLowerCase());
+      var itr = 0;
+  
+      while (itr <= idx) {
+        if (jQuery.isEmptyObject(last_ptr[itr])) {
+          last_ptr[itr] = $('<ul>').addClass('nav');
+          if (itr === 0) {
+            base.append(last_ptr[itr])
+          } else {
+            if(last_ptr[itr-1].children('li').length === 0){
+              last_ptr[itr-1].append(last_ptr[itr]);
+            }
+            else {
+              last_ptr[itr - 1].children('li').last().append(last_ptr[itr]);
+            }
+          }
+        }
+        itr++;
+      }
+      var anchor = generate_anchor(heading.text());
+      heading.attr('id', anchor);
+      var a = $('<a>')
+      .text(heading.text())
+      .attr('href', '#' + anchor);
+  
+    var li = $('<li>')
+      .append(a);
+  
+    last_ptr[idx].append(li);
+    for (i = idx + 1; i < last_ptr.length; i++) {
+      last_ptr[i] = {};
+    }
+    });
+  }
+  /* run scripts when document is ready */
+  $(function() {
+    "use strict";
+  
+    var $window = $(window);
+    var $body = $(document.body);
+  
+    /* size of thumbnails */
+  
+    var hidden_types = ['source']
+    var output_types = ['output', 'message', 'warning', 'error']
+  
+    /* style tables */
+    $('table').addClass('table table-striped table-bordered table-hover table-condensed');
+  
+    $('pre code').each(function(i, e) {
+      hljs.highlightBlock(e);
+    });
+  
+    /* Magnific Popup */
+    $(".thumbnail").each(function(){
+      $(this).magnificPopup({
+        disableOn: 768,
+        closeOnContentClick: true,
+  
+        type: 'image',
+        items: {
+          src: $(this).find('img').attr('src'),
+        }
+      });
+    });
+  
+    function toggle_block(obj, show) {
+      var span = obj.find('span');
+      if(show === true){
+        span.removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+        obj.next('pre').slideDown();
+      }
+      else {
+        span.removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+        obj.next('pre').slideUp();
+      }
+    }
+  
+    function toggle_thumbnails(imgs, show){
+      if(show === true){
+        imgs.parents().show()
+        imgs.slideDown();
+      }
+      else {
+        imgs.slideUp(400, function(){ $(this).parent().hide(); });
+      }
+    }
+  
+    function global_toggle(obj){
+      var type = obj.attr('type');
+      var show = !obj.parent('li').hasClass('active');
+      if(show === true){
+        obj.parent('li').addClass('active');
+      }
+      else{
+        obj.parent('li').removeClass('active');
+      }
+      if(type == 'figure'){
+        toggle_thumbnails($('.thumbnail img'), show);
+      }
+      else {
+        $('.toggle.' + type).each(function() { toggle_block($(this), show); });
+      }
+    }
+  
+    /* onclick toggle next code block */
+    $('.toggle').click(function() {
+      var span = $(this).find('span');
+      toggle_block($(this), !span.hasClass('glyphicon-chevron-down'));
+      return false
+    })
+  
+    // global toggles
+    $('.toggle-global').click(function(){
+      var type = $(this).attr('type');
+      if(type === 'all-source'){
+          $('li a.source').each(function() {
+            global_toggle($(this));
+          });
+        }
+      else if(type === 'all-output'){
+        $.each(output_types, function(i, val){
+          console.log(val);
+          global_toggle($('li a.' + val));
+        });
+      }
+      else {
+        console.log($(this));
+        global_toggle($(this));
+      }
+      return false;
+    });
+    /* table of contents */
+    if($(['h1', 'h2', 'h3', 'h4'].join(',')).length > 0){
+      $('body > #wrap > .container > .row').append('<div class="col-md-2"><div id="toc" class="well sidebar sidenav affix hidden-print"/></div>');
+      $('#toc').generate_TOC();
+    }
+  
+    $.each(hidden_types, function(i, type) {
+      $('li[type=' + type + ']').each(function(){ global_toggle($(this)); });
+    });
+  
+    /* remove paragraphs with no content */
+    $('p:empty').remove();
+  
+    $body.scrollspy({
+      target: '.sidebar',
+    });
+  
+    /* theme switch */
+    $('.theme-switch').click(function(){
+      var css = $('link[title=' + $(this).attr('title') + ']');
+      $('#theme[rel=stylesheet]').attr('href', css.attr('href'));
+      $('.theme-switch').closest('li').removeClass('active');
+      $(this).closest('li').addClass('active');
+      return false;
+    });
+    /* code style switch */ //TODO use same function for both of these?
+    $('.highlight-switch').click(function(){
+      var css = $('link[title="' + $(this).attr('title') + '"]');
+      $('#highlight[rel=stylesheet]').attr('href', css.attr('href'));
+      $('.highlight-switch').closest('li').removeClass('active');
+      $(this).closest('li').addClass('active');
+      return false;
+    });
+  
+    //TODO refresh on show/hide
+    $window.on('load', function () {
+      $body.scrollspy('refresh');
+    })
+  
+  });
+  
+  </script>
+  <style>
+  /* Knitr_bootstrap styles */
+  #header {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  #wrap .container-fluid {
+    padding: 0;
+    overflow: hidden;
+  }
+  .toggle{
+    text-transform: capitalize;
+  }
+  
+  .toggle-global{
+    text-transform: capitalize;
+  }
+  
+  /* Sticky footer styles */
+  * {
+    margin:0;
+  }
+  html,
+  body {
+      height: 100%;
+      padding:0 !important;
+      /* The html and body elements cannot have any padding or margin. */
+      /*overflow-x: hidden;*/
+  }
+  
+  /* Wrapper for page content to push down footer */
+  #wrap {
+      min-height: 100%;
+      height: auto !important;
+      height: 100%;
+      /* Negative indent footer by it's height */
+      margin: 0 auto -120px;
+  }
+  
+  /* Set the fixed height of the footer here */
+  #push,
+  #footer {
+      height: 120px;
+  }
+  
+  #footer {
+    text-align: center;
+  }
+  
+  /* Top level subheader elements.  These are the first nested items underneath a header element. */
+  .header li {
+    font-size: 20px;
+  }
+  
+  /* Makes the font smaller for all subheader elements. */
+  .sub-header li {
+      font-size: 12px;
+  }
+  
+  button.thumbnails {
+    margin-left:0px;
+  }
+  
+  /*
+   * Side navigation
+   *
+   * Scrollspy and affixed enhanced navigation to highlight sections and secondary
+   * sections of docs content.
+   */
+  
+  /* By default it's not affixed in mobile views, so undo that */
+  .sidebar.affix {
+    position: static;
+  }
+  
+  /* First level of nav */
+  .sidenav {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding-top:    10px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+  }
+  
+  /* All levels of nav */
+  .sidebar .nav > li > a {
+    display: block;
+    padding: 5px 20px;
+  }
+  .sidebar .nav > li > a:hover,
+  .sidebar .nav > li > a:focus {
+    text-decoration: none;
+    border-right: 1px solid;
+  }
+  .sidebar .nav > .active > a,
+  .sidebar .nav > .active:hover > a,
+  .sidebar .nav > .active:focus > a {
+    font-weight: bold;
+    background-color: transparent;
+    border-right: 1px solid;
+  }
+  
+  /* Nav: second level (shown on .active) */
+  .sidebar .nav .nav {
+    display: none; /* Hide by default, but at >768px, show it */
+    margin-bottom: 8px;
+  }
+  .sidebar .nav .nav > li > a {
+    padding-top:    3px;
+    padding-bottom: 3px;
+    padding-left: 30px;
+    font-size: 90%;
+  }
+  
+  .sidebar .nav .nav .nav > li > a {
+    padding-left: 40px;
+  }
+  .sidebar .nav .nav .nav .nav > li > a {
+    padding-left: 50px;
+  }
+  
+  /* Show and affix the side nav when space allows it */
+  @media screen and (min-width: 992px) {
+    .sidebar .nav > .active > ul {
+      display: block;
+    }
+    /* Widen the fixed sidebar */
+    .sidebar.affix,
+    .sidebar.affix-bottom {
+      width: 213px;
+    }
+    .sidebar.affix-top,
+    .sidebar.affix {
+      position: fixed; /* Undo the static from mobile first approach */
+      top: 30px;
+    }
+    .sidebar.affix-bottom {
+      position: absolute; /* Undo the static from mobile first approach */
+    }
+    .sidebar.affix-bottom .sidenav,
+    .sidebar.affix .sidenav {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+  @media screen and (min-width: 1200px) {
+    /* Widen the fixed sidebar again */
+    .sidebar.affix-bottom,
+    .sidebar.affix {
+      width: 263px;
+    }
+  }
+  
+  #toc {
+    padding: 10px 0px;
+    margin:0;
+    border:0;
+  }
+  
+  
+  .panel pre {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  button + pre {
+    margin: 0;
+    padding: 0;
+  }
+  pre code {
+    border-radius: 0;
+  }
+  /* Magnific Popup CSS */
+  .mfp-bg {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1042;
+    overflow: hidden;
+    position: fixed;
+    background: #0b0b0b;
+    opacity: 0.8;
+    filter: alpha(opacity=80); }
+  
+  .mfp-wrap {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1043;
+    position: fixed;
+    outline: none !important;
+    -webkit-backface-visibility: hidden; }
+  
+  .mfp-container {
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    padding: 0 8px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box; }
+  
+  .mfp-container:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle; }
+  
+  .mfp-align-top .mfp-container:before {
+    display: none; }
+  
+  .mfp-content {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 auto;
+    text-align: left;
+    z-index: 1045; }
+  
+  .mfp-inline-holder .mfp-content,
+  .mfp-ajax-holder .mfp-content {
+    width: 100%;
+    cursor: auto; }
+  
+  .mfp-ajax-cur {
+    cursor: progress; }
+  
+  .mfp-zoom-out-cur,
+  .mfp-zoom-out-cur .mfp-image-holder .mfp-close {
+    cursor: -moz-zoom-out;
+    cursor: -webkit-zoom-out;
+    cursor: zoom-out; }
+  
+  .mfp-zoom {
+    cursor: pointer;
+    cursor: -webkit-zoom-in;
+    cursor: -moz-zoom-in;
+    cursor: zoom-in; }
+  
+  .mfp-auto-cursor .mfp-content {
+    cursor: auto; }
+  
+  .mfp-close,
+  .mfp-arrow,
+  .mfp-preloader,
+  .mfp-counter {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none; }
+  
+  .mfp-loading.mfp-figure {
+    display: none; }
+  
+  .mfp-hide {
+    display: none !important; }
+  
+  .mfp-preloader {
+    color: #cccccc;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    text-align: center;
+    margin-top: -0.8em;
+    left: 8px;
+    right: 8px;
+    z-index: 1044; }
+  
+  .mfp-preloader a {
+    color: #cccccc; }
+  
+  .mfp-preloader a:hover {
+    color: white; }
+  
+  .mfp-s-ready .mfp-preloader {
+    display: none; }
+  
+  .mfp-s-error .mfp-content {
+    display: none; }
+  
+  button.mfp-close,
+  button.mfp-arrow {
+    overflow: visible;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    display: block;
+    padding: 0;
+    z-index: 1046;
+    -webkit-box-shadow: none;
+    box-shadow: none; }
+  
+  button::-moz-focus-inner {
+    padding: 0;
+    border: 0; }
+  
+  .mfp-close {
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    text-decoration: none;
+    text-align: center;
+    opacity: 0.65;
+    padding: 0 0 18px 10px;
+    color: white;
+    font-style: normal;
+    font-size: 28px;
+    font-family: Arial, Baskerville, monospace; }
+    .mfp-close:hover, .mfp-close:focus {
+      opacity: 1; }
+    .mfp-close:active {
+      top: 1px; }
+  
+  .mfp-close-btn-in .mfp-close {
+    color: #333333; }
+  
+  .mfp-image-holder .mfp-close,
+  .mfp-iframe-holder .mfp-close {
+    color: white;
+    right: -6px;
+    text-align: right;
+    padding-right: 6px;
+    width: 100%; }
+  
+  .mfp-counter {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #cccccc;
+    font-size: 12px;
+    line-height: 18px; }
+  
+  .mfp-arrow {
+    position: absolute;
+    opacity: 0.65;
+    margin: 0;
+    top: 50%;
+    margin-top: -55px;
+    padding: 0;
+    width: 90px;
+    height: 110px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
+  
+  .mfp-arrow:active {
+    margin-top: -54px; }
+  
+  .mfp-arrow:hover,
+  .mfp-arrow:focus {
+    opacity: 1; }
+  
+  .mfp-arrow:before, .mfp-arrow:after,
+  .mfp-arrow .mfp-b,
+  .mfp-arrow .mfp-a {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin-top: 35px;
+    margin-left: 35px;
+    border: medium inset transparent; }
+  .mfp-arrow:after,
+  .mfp-arrow .mfp-a {
+    border-top-width: 13px;
+    border-bottom-width: 13px;
+    top: 8px; }
+  .mfp-arrow:before,
+  .mfp-arrow .mfp-b {
+    border-top-width: 21px;
+    border-bottom-width: 21px; }
+  
+  .mfp-arrow-left {
+    left: 0; }
+    .mfp-arrow-left:after,
+    .mfp-arrow-left .mfp-a {
+      border-right: 17px solid white;
+      margin-left: 31px; }
+    .mfp-arrow-left:before,
+    .mfp-arrow-left .mfp-b {
+      margin-left: 25px;
+      border-right: 27px solid #3f3f3f; }
+  
+  .mfp-arrow-right {
+    right: 0; }
+    .mfp-arrow-right:after,
+    .mfp-arrow-right .mfp-a {
+      border-left: 17px solid white;
+      margin-left: 39px; }
+    .mfp-arrow-right:before,
+    .mfp-arrow-right .mfp-b {
+      border-left: 27px solid #3f3f3f; }
+  
+  .mfp-iframe-holder {
+    padding-top: 40px;
+    padding-bottom: 40px; }
+  
+  .mfp-iframe-holder .mfp-content {
+    line-height: 0;
+    width: 100%;
+    max-width: 900px; }
+  
+  .mfp-iframe-scaler {
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    padding-top: 56.25%; }
+  
+  .mfp-iframe-scaler iframe {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    background: black; }
+  
+  .mfp-iframe-holder .mfp-close {
+    top: -40px; }
+  
+  /* Main image in popup */
+  img.mfp-img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    line-height: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 40px 0 40px;
+    margin: 0 auto; }
+  
+  /* The shadow behind the image */
+  .mfp-figure:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 40px;
+    bottom: 40px;
+    display: block;
+    right: 0;
+    width: auto;
+    height: auto;
+    z-index: -1;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    background: #444444; }
+  
+  .mfp-figure {
+    line-height: 0; }
+  
+  .mfp-bottom-bar {
+    margin-top: -36px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    cursor: auto; }
+  
+  .mfp-title {
+    text-align: left;
+    line-height: 18px;
+    color: #f3f3f3;
+    word-wrap: break-word;
+    padding-right: 36px; }
+  
+  .mfp-figure small {
+    color: #bdbdbd;
+    display: block;
+    font-size: 12px;
+    line-height: 14px; }
+  
+  .mfp-image-holder .mfp-content {
+    max-width: 100%; }
+  
+  .mfp-gallery .mfp-image-holder .mfp-figure {
+    cursor: pointer; }
+  
+  @media screen and (max-width: 800px) and (orientation: landscape), screen and (max-height: 300px) {
+    /**
+     * Remove all paddings around the image on small screen
+     */
+    .mfp-img-mobile .mfp-image-holder {
+      padding-left: 0;
+      padding-right: 0; }
+  
+    .mfp-img-mobile img.mfp-img {
+      padding: 0; }
+  
+    /* The shadow behind the image */
+    .mfp-img-mobile .mfp-figure:after {
+      top: 0;
+      bottom: 0; }
+  
+    .mfp-img-mobile .mfp-bottom-bar {
+      background: rgba(0, 0, 0, 0.6);
+      bottom: 0;
+      margin: 0;
+      top: auto;
+      padding: 3px 5px;
+      position: fixed;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box; }
+  
+    .mfp-img-mobile .mfp-bottom-bar:empty {
+      padding: 0; }
+  
+    .mfp-img-mobile .mfp-counter {
+      right: 5px;
+      top: 3px; }
+  
+    .mfp-img-mobile .mfp-close {
+      top: 0;
+      right: 0;
+      width: 35px;
+      height: 35px;
+      line-height: 35px;
+      background: rgba(0, 0, 0, 0.6);
+      position: fixed;
+      text-align: center;
+      padding: 0; }
+  
+    .mfp-img-mobile .mfp-figure small {
+      display: inline;
+      margin-left: 5px; } }
+  @media all and (max-width: 900px) {
+    .mfp-arrow {
+      -webkit-transform: scale(0.75);
+      transform: scale(0.75); }
+  
+    .mfp-arrow-left {
+      -webkit-transform-origin: 0;
+      transform-origin: 0; }
+  
+    .mfp-arrow-right {
+      -webkit-transform-origin: 100%;
+      transform-origin: 100%; }
+  
+    .mfp-container {
+      padding-left: 6px;
+      padding-right: 6px; } }
+  .mfp-ie7 .mfp-img {
+    padding: 0; }
+  .mfp-ie7 .mfp-bottom-bar {
+    width: 600px;
+    left: 50%;
+    margin-left: -300px;
+    margin-top: 5px;
+    padding-bottom: 5px; }
+  .mfp-ie7 .mfp-container {
+    padding: 0; }
+  .mfp-ie7 .mfp-content {
+    padding-top: 44px; }
+  .mfp-ie7 .mfp-close {
+    top: 0;
+    right: 0;
+    padding-top: 0; }
+  
+  //Magnific overrides
+  .mfp-image img{
+    background: white;
+  }
+  .mfp-figure:after {
+    background: white;
+  }
+  
+  /*
+   * Off Canvas navbar toggle right
+   * --------------------------------------------------
+   */
+  
+  @media screen and (max-width: 768px) {
+    .row-offcanvas .collapsing {
+    -webkit-transition: none 0;
+      -moz-transition: none 0;
+      transition: none 0;
+    }
+   .row-offcanvas .navbar {
+    position: absolute;
+    z-index: 2;
+      right:0;
+      height:100%;
+      width:55px;
+      border:0;
+      background-color:transparent;
+    }
+    .row-offcanvas .navbar-toggle {
+      margin-right: 5px;
+      margin-left: 5px;
+    }
+    .row-offcanvas {
+      position: relative;
+    }
+    .row-offcanvas-right.active .navbar {
+    position: absolute;
+    z-index: 2;
+      right: -28.4%;
+      width:40%;
+      background-color:#eee;
+      border:0 solid #ddd;
+      border-left-width:1px;
+    }
+    .row-offcanvas-right.active {
+      left: -30%;
+    }
+    .row-offcanvas-right.active .navbar-collapse {
+      position: relative;
+      width: 100%;
+    }
+    .row-offcanvas .content {
+    /*width:calc(100% - 60px);*/
+    }
+  }
+  </style>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Systematic Review with Active Learning</h1>
+</div>
+<title>
+Systematic Review with Active Learning
+</title>
+<div id="wrap">
+<div class="container">
+<div class="row row-offcanvas row-offcanvas-right">
+<div class="contents col-xs-12 col-md-10">
+<h1 id="introduction">Introduction</h1>
+<p>The main goal of this document is to introduce systematic reviews, explain why they are useful and present a workflow to conduct a systematic review with the help of an active learning system.</p>
+<h1 id="what-is-a-systematic-review">What is a systematic review?</h1>
+<p>Systematic literature reviews are a method of making sense of large bodies of information, and a means of contributing to the answers to questions about what works and what does not – and many other types of question too. They are a method of mapping out areas of uncertainty, and identifying where little or no relevant research has been done, but where new studies are needed.</p>
+<p>Systematic reviews also flag up areas where spurious certainty abounds. These are areas where we think we know more than we do, but where in reality there is little convincing evidence to support our beliefs. <a href="https://doi.org/10.1002/9780470754887">(Petticew &amp; Roberts, 2005, pp. 2</a>)</p>
+<h2 id="systematic-review-vs-meta-analysis-vs-narrative-review">Systematic review vs meta-analysis vs Narrative review</h2>
+<p>A systematic review answers strives to comprehensively identify, appraise, and synthesize all the relevant studies on a given topic. Systematic reviews are often used to test just a single hypothesis, or a series of related hypotheses.</p>
+<p>A meta-analysis uses a specific statistical technique for synthesizing the results of several studies into a single quantitative estimate (i.e., a summary effect size).</p>
+<p>A narrative review is the process of synthesizing primary studies and exploring heterogeneity descriptively, rather than statistically. <a href="https://doi.org/10.1002/9780470754887">(Petticew &amp; Roberts, 2005, pp. 19</a>)</p>
+<h2 id="why-do-a-systematic-review">Why do a systematic review?</h2>
+<p>It is a fair criticism of scientific research that it is often difficult to know which, if any, study to believe.</p>
+<blockquote>
+<p>Newton’s Third Law of Motion: ‘‘For every expert there is an equal and opposite expert.’’</p>
+</blockquote>
+<p>The traditional scientific approach to this problem is to carry out a literature review.</p>
+<p>However, traditional literature reviews frequently summarize highly unrepresentative samples of studies in an unsystematic and uncritical fashion.</p>
+<p>But the problem is not just one of inconsistency, but one of information overload.</p>
+<p>The massive expansion of research output, both in peer-reviewed publications, and unpublished, e.g. in conference presentations or symposia, mean it is difficult to establish what work has been done in your area already, and to ensure that knowledge keeps up to date with the best research evidence.</p>
+<h2 id="the-role-of-systematic-literature-reviews">The role of systematic literature reviews</h2>
+<p>Systematic reviews are literature reviews that adhere closely to a set of scientific methods that explicitly aim to limit systematic error (bias), mainly by attempting to identify, appraise and synthesize all relevant studies (of whatever design) in order to answer a particular question (or set of questions).</p>
+<p>Systematic review will be most useful when:</p>
+<p>• there is a clear and defined research question</p>
+<p>• several empirical studies have been published</p>
+<p>• there is uncertainty about the results</p>
+<hr />
+<h1 id="tutorial-my-first-systematic-review-with-active-learning">Tutorial: My first systematic review with active learning</h1>
+<p>A systematic review needs a detailed protocol that describes how the review will be processed and methods that will be applied. There are several published examples of such protocols. Here we follow the protocol suggested by <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6148622/">Bramer et al. (2018)</a> which consists on the following steps:</p>
+<ol style="list-style-type: decimal">
+<li><p>Determine a clear and focused question</p></li>
+<li><p>Describe the articles that can answer the question</p></li>
+<li><p>Decide which key concepts address the different elements of the question</p></li>
+<li><p>Decide which elements should be used for the best results</p></li>
+<li><p>Choose an appropriate database and interface to start with</p></li>
+<li><p>Document the search process in a text document</p></li>
+<li><p>Identify appropriate index terms in the thesaurus of the first database</p></li>
+<li><p>Identify synonyms in the thesaurus</p></li>
+<li><p>Add variations in search terms</p></li>
+<li><p>Use database-appropriate syntax, with parentheses, Boolean operators, and field codes</p></li>
+<li><p>Optimize the search</p></li>
+<li><p>Evaluate the initial results</p></li>
+<li><p>Check for errors</p></li>
+<li><p>Translate to other databases</p></li>
+<li><p>Test and reiterate</p></li>
+</ol>
+<p>Note: This tutorial will not follow through with an exhaustive account of each of these steps. Instead, a shortened version of this list will presented and discussed.</p>
+<h2 id="determine-a-clear-and-focused-question">Determine a clear and focused question</h2>
+<p>For the sake of this exercise, the aim is to answer the following question:</p>
+<blockquote>
+<p>What factors explain interview duration in computer assisted telephone surveys?</p>
+</blockquote>
+<h2 id="describe-the-articles-that-can-answer-the-question">Describe the articles that can answer the question</h2>
+<p>Research articles that collect and analize interview duration with computer assisted telephone surveys (CATI) data.</p>
+<h2 id="what-are-the-research-question-key-concepts">What are the research question key concepts?</h2>
+<ul>
+<li><p>Survey</p></li>
+<li><p>telephone</p></li>
+<li><p>Interview duration</p></li>
+</ul>
+<h2 id="choose-the-database">Choose the database</h2>
+<p>There is a very long list of <a href="https://en.wikipedia.org/wiki/List_of_academic_databases_and_search_engines">academic databases and search engines</a>.</p>
+<blockquote>
+<p>How to choose?</p>
+</blockquote>
+<p>In addition to any specific requirements which might come from the specificity of the research question (e.g. medical trials have dedicated databases), recent research by <a href="https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1378">Gusenbauer and Haddaway (2019</a>) suggests the following databases:</p>
+<ul>
+<li><a href="https://dl.acm.org/">ACM Digital Library</a></li>
+<li><a href="https://www.base-search.net/">BASE</a></li>
+<li><a href="https://www.clinicaltrials.gov/">ClinicalTrials.gov</a></li>
+<li><a href="https://www.cochranelibrary.com/">Cochrane Library</a></li>
+<li><a href="https://www.ebsco.com/products/research-databases">EbscoHost</a> (tested for ERIC, Medline, EconLit, CINHAL Plus, SportsDiscus)</li>
+<li><a href="https://www.ovid.com/">OVID</a> (tested for Embase, Embase Classic, PsychINFO)</li>
+<li><a href="https://www.proquest.com/index">ProQuest</a> (tested for Nursing &amp; Allied Health Database, Public Health Database)</li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/">PubMed</a></li>
+<li><a href="https://www.sciencedirect.com/">ScienceDirect</a></li>
+<li><a href="https://scopus.com/">Scopus</a></li>
+<li><a href="https://trid.trb.org/">TRID</a></li>
+<li><a href="https://www.who.int/chp/knowledge/vhl/en/">Virtual Health Library</a></li>
+<li><a href="https://webofknowledge.com/WOS">Web of Science</a> (tested for Web of Science Core Collection, Medline)</li>
+<li><a href="https://onlinelibrary.wiley.com/">Wiley Online Library</a></li>
+</ul>
+<p><strong><a href="https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1378">Gusenbauer and Haddaway (2019</a>) further suggest that systems such as Google scholar have severe performance limitations and should only be considered supplementary to these latter databases, especially for non-query‐based search methods where they might still provide great benefit.</strong></p>
+<hr />
+<p>For the sake of this exercise, we go with the <a href="https://www.webofknowledge.com">Web of Science Core Collection</a></p>
+<h2 id="document-the-search-process">Document the search process</h2>
+<p>Keep a log of the all the steps taken to make the search reproducible.</p>
+<h2 id="identify-appropriate-index-terms-and-identify-synonyms">Identify appropriate index terms and identify synonyms</h2>
+<p>The initial terms we identify are the following:</p>
+<ul>
+<li>duration</li>
+<li>telephone</li>
+<li>Survey</li>
+</ul>
+<h2 id="add-variations-in-search-terms-truncation-spelling-differences-abbreviations-opposites">Add variations in search terms (truncation, spelling differences, abbreviations, opposites)</h2>
+<ul>
+<li>timestamps</li>
+<li>interview lenght</li>
+<li>CATI</li>
+</ul>
+<h2 id="use-database-appropriate-syntax">Use database appropriate syntax</h2>
+<p>Check the <a href="http://images.webofknowledge.com/WOKRS535R100/help/WOS/hp_advanced_search.html">advance search</a> help menu of Web of Science.</p>
+<p>The start of our query will be the following:</p>
+<blockquote>
+<p>ALL=(survey AND telephone AND duration)</p>
+</blockquote>
+<p><img src="./optimize.png" style="width:120.0%" alt="Select language and document type" /></p>
+<h2 id="optimize-the-search">Optimize the search</h2>
+<blockquote>
+<p>We can start delimiting and optimizing our search by, for example, selecting the language and the type of documents.</p>
+</blockquote>
+<p><img src="./optimize2.png" style="width:120.0%" alt="Results" /></p>
+<p>Next we can add the synonyms we previously identified.</p>
+<blockquote>
+<p>ALL=(survey OR surveys) AND ALL=(telephone OR CATI) AND ALL=(duration OR length OR timestamps)</p>
+</blockquote>
+<p><img src="./optimize3.png" style="width:120.0%" alt="Add synonyms" /></p>
+<h2 id="extend-this-query-to-other-databases">Extend this query to other databases</h2>
+<p>Extend this query to other databases fitting your research question.</p>
+<hr />
+<h1 id="selecting-the-relevant-literature-presenting-the-asreview">Selecting the relevant literature: presenting the ASReview</h1>
+<p>So now we got the data and we have 1227 entries. Do we have to read all this papers?</p>
+<blockquote>
+<p>Short answer: yes.</p>
+</blockquote>
+<p>However, it is very likely that a high proportion of these entries are actually not relevant to our research question. We can then look for the help of more systematized methods to reduce the number of papers we actually have to read.</p>
+<h2 id="asreview">ASReview</h2>
+<p><a href="https://asreview.nl/">ASReview</a> enables you to screen more texts than the traditional way of screening in the same amount of time. Which means that you can achieve a higher quality than when you would have used the traditional approach.</p>
+<p><img src="./FlowChart.png" style="width:70.0%" alt="Illustration of ASReview" /></p>
+<p>The following video presents how ASReview helps us gain in efficiency compared to traditional reviews.</p>
+<p><video src="./asreview.mp4" controls=""><a href="./asreview.mp4">graph)</a></video></p>
+<p>Source: <a href="https://twitter.com/LGTummers/status/1326153384710168576">Here</a></p>
+<p>Detailed information regarding how to install and other relevant issues can be found in the <a href="https://asreview.nl/">ASReview</a> website.</p>
+<h2 id="example-using-the-asreview">Example: using the ASreview</h2>
+<blockquote>
+<p>After compiling the results of the systematic review to a .ris format file we can introduce it to ASReview.</p>
+</blockquote>
+<p><img src="./asreview1.png" style="width:80.0%" alt="ASreview" /></p>
+<blockquote>
+<p>Then we must set the priors to train the active learning system. This is done by looking at the abstracts and selecting the ones that are relevant or irrelevant to our research question.</p>
+</blockquote>
+<p><img src="./asreview2.png" style="width:80.0%" alt="Relevant" /></p>
+<p><img src="./asreview3.png" style="width:80.0%" alt="Relevant" /></p>
+<blockquote>
+<p>After classifying some documents (the more, the better) we can select the model of our preference. More information about the specificities of each of these training models can be found in the <a href="https://asreview.nl/">ASReview</a> website.</p>
+</blockquote>
+<p><img src="./asreview4.png" style="width:80.0%" alt="Learning Model" /></p>
+<p><img src="./asreview5.png" style="width:80.0%" alt="Statistics" /></p>
+<h2 id="final-results">Final Results</h2>
+<blockquote>
+<p>In the final results we can see all the 1227 entries of the literature review now ranked by relevance following the priors we set in the active learning model.</p>
+</blockquote>
+<p><img src="./excel1.png" alt="Excel" /></p>
+<div class="row">
+
+</div>
+<blockquote>
+<p>A closer look to each of the final results columns.</p>
+</blockquote>
+<div class="row">
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+record_id
+</th>
+<th style="text-align:left;">
+type_of_reference
+</th>
+<th style="text-align:left;">
+primary_title
+</th>
+<th style="text-align:left;">
+first_authors
+</th>
+<th style="text-align:left;">
+publication_year
+</th>
+<th style="text-align:left;">
+alternate_title3
+</th>
+<th style="text-align:left;">
+volume
+</th>
+<th style="text-align:left;">
+number
+</th>
+<th style="text-align:left;">
+doi
+</th>
+<th style="text-align:left;">
+abstract
+</th>
+<th style="text-align:left;">
+publisher
+</th>
+<th style="text-align:left;">
+start_page
+</th>
+<th style="text-align:left;">
+end_page
+</th>
+<th style="text-align:left;">
+notes
+</th>
+<th style="text-align:left;">
+url
+</th>
+<th style="text-align:left;">
+tertiary_title
+</th>
+<th style="text-align:left;">
+issn
+</th>
+<th style="text-align:right;">
+final_included
+</th>
+<th style="text-align:right;">
+asreview_ranking
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+170
+</td>
+<td style="text-align:left;">
+JOUR
+</td>
+<td style="text-align:left;">
+Occupation coding during the interview
+</td>
+<td style="text-align:left;">
+Schierholz, Malte, Gensicke, Miriam, Tschersich, Nikolai, Kreuter, Frauke
+</td>
+<td style="text-align:left;">
+2018/02//
+</td>
+<td style="text-align:left;">
+JOURNAL OF THE ROYAL STATISTICAL SOCIETY SERIES A-STATISTICS IN SOCIETY
+</td>
+<td style="text-align:left;">
+181
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+10.1111/rssa.12297
+</td>
+<td style="text-align:left;min-width: 40em; ">
+Currently, most surveys ask for occupation with open-ended questions. The verbal responses are coded afterwards, which is error prone and expensive. We present an alternative approach that allows occupation coding during the interview. Our new technique uses a supervised learning algorithm to predict candidate job categories. These suggestions are presented to the respondent, who in turn can choose the most appropriate occupation. 72.4% of the respondents selected an occupation when the new instrument was tested in a telephone survey, entailing potential cost savings. To aid further improvements, we identify some factors for how to increase quality and to reduce interview duration.
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+379
+</td>
+<td style="text-align:left;">
+407
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+627
+</td>
+<td style="text-align:left;">
+JOUR
+</td>
+<td style="text-align:left;">
+Comparison of Cell Phone and Landline Surveys: A Design Perspective
+</td>
+<td style="text-align:left;">
+Carley-Baxter, Lisa R, Peytchev, Andy, Black, Michele C
+</td>
+<td style="text-align:left;">
+2010/02//
+</td>
+<td style="text-align:left;">
+FIELD METHODS
+</td>
+<td style="text-align:left;">
+22
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+10.1177/1525822X09360310
+</td>
+<td style="text-align:left;min-width: 40em; ">
+Rapidly decreasing coverage of landline surveys is increasing the need to implement dual-frame surveys for inference to the adult U.S. population. Vast differences between the way cell phones and landlines are used, and the populations using them, require separate data collection designs. Yet research comparing cell phone surveys to landline telephone surveys is scarce with respect to operational outcomes. The authors test hypothesized differences between cell phone and landline interviewing through experiments on survey topic and length and find that these factors may not have the same impact in cell phone surveys. To help optimize calling cell phone numbers in future studies, the authors present self-reported cell phone use patterns and other factors affecting the probability of contact and sampling design. To inform the inclusion of adults with both a cell and landline phone, they compare cell phone use among cell phone only and cell with landline cases. The authors found notable differences between the cell only and cell with landline respondents in terms of cell phone use. Implications and directions for future work are discussed.
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:left;">
+15
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="further-information">Further information</h1>
+<p>How to report systematic review and metanalyses?</p>
+<p><a href="https://www.prisma-statement.org/">PRISMA</a></p>
+</div>
+</div>
+<div class="navbar navbar-fixed-bottom navbar-inverse">
+<div class="container">
+<div class="navbar-header">
+<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+</button>
+</div>
+<div id="bottom-navbar" class="navbar-collapse collapse navbar-responsive-collapse">
+<ul class="nav navbar-nav navbar-right">
+<li class="nav">
+<p class="navbar-text">
+Toggle
+</p>
+</li>
+<li class="dropup">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown">Code <b class="caret"></b></a>
+<ul class="dropdown-menu">
+<li class="dropdown-header">
+Languages
+</li>
+<li class="active">
+<a href="#" class="toggle-global source R" type="source.R">R</a>
+</li>
+<li>
+<a href="#" type="all-source" class="toggle-global">All</a>
+</li>
+</ul>
+</li>
+<li class="active">
+<a href="#" type="figure" class="toggle-global">Figures</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="push">
+
+</div>
+<div id="footer">
+<div class="container">
+<p class="text-muted" id="credit">
+Styled with <a href="https://github.com/jimhester/knitrBootstrap">knitrBootstrap</a>
+</p>
+</div>
+</div>
+<link rel="stylesheet" id="theme" href="https://netdna.bootstrapcdn.com/bootswatch/3.0.0/flatly/bootstrap.min.css" media="screen"></link><link rel="stylesheet" id="highlight" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/styles/sunburst.min.css" media="screen"></link>
+</div>
+</body>
+</html>
