@@ -18,25 +18,22 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introduction
 
-The main goal of this document is to introduce systematic reviews, explain why they are useful and present a workflow to conduct systematic review with the help of an active learning system.
+The main goal of this document is to introduce systematic reviews, explain why they are useful and present a workflow to conduct systematic reviews with the help of an active learning system.
 
-# What is a systematic review or meta-analysis?
+# What is a systematic review?
 
->Systematic literature reviews are a method of making sense of large bodies of information, and a means of contributing to the answers to questions about what works and what does not – and many other types of question too. They are a method of mapping out areas of uncertainty, and identifying where little or no relevant research has been done, but where new studies are needed. 
+Systematic literature reviews are a method of making sense of large bodies of information, and a means of contributing to the answers to questions about what works and what does not – and many other types of question too. They are a method of mapping out areas of uncertainty, and identifying where little or no relevant research has been done, but where new studies are needed. 
 
->Systematic reviews also flag up areas where spurious certainty abounds. These are areas where we think we know more than we do, but where in reality there is little convincing evidence to support our beliefs.
+Systematic reviews also flag up areas where spurious certainty abounds. These are areas where we think we know more than we do, but where in reality there is little convincing evidence to support our beliefs. [(Petticew & Roberts, 2005, pp. 2](https://doi.org/10.1002/9780470754887))
 
-[Petticew & Roberts, 2005, pp. 2](https://doi.org/10.1002/9780470754887)
 
 ## Systematic review vs meta-analysis vs Narrative review
 
-> A systematic review answers strives to comprehensively identify, appraise, and synthesize all the relevant studies on a given topic. Systematic reviews are often used to test just a single hypothesis, or a series of related hypotheses.
+A systematic review answers strives to comprehensively identify, appraise, and synthesize all the relevant studies on a given topic. Systematic reviews are often used to test just a single hypothesis, or a series of related hypotheses.
 
-> A meta-analysis uses a specific statistical technique for synthesizing the results of several studies into a single quantitative estimate (i.e., a summary effect size).
+A meta-analysis uses a specific statistical technique for synthesizing the results of several studies into a single quantitative estimate (i.e., a summary effect size).
 
-> A narrative review is the process of synthesizing primary studies and exploring heterogeneity descriptively, rather than statistically.
-
-[Petticew & Roberts, 2005, pp. 19](https://doi.org/10.1002/9780470754887)
+A narrative review is the process of synthesizing primary studies and exploring heterogeneity descriptively, rather than statistically. [(Petticew & Roberts, 2005, pp. 19](https://doi.org/10.1002/9780470754887))
 
 
 
@@ -54,7 +51,7 @@ But the problem is not just one of inconsistency, but one of information overloa
 
 The massive expansion of research output, both in peer-reviewed publications, and unpublished, e.g. in conference presentations or symposia, mean it is difficult to establish what work has been done in your area already, and to ensure that knowledge keeps up to date with the best research evidence. 
 
-## The role of Systematic Literature reviews
+## The role of systematic literature reviews
 
 Systematic reviews are literature reviews that adhere closely to a set of scientific methods that explicitly aim to limit systematic error (bias), mainly by attempting to identify, appraise and synthesize all relevant studies (of whatever design) in order to answer a particular question (or set of questions).
 
@@ -68,6 +65,7 @@ Systematic review will be most useful when:
 • there is uncertainty about the results
 
 
+***
 
 
 # Tutorial: My first systematic review with active learning
@@ -116,7 +114,7 @@ For the sake of this exercise, the aim is to answer the following question:
 ## Describe the articles that can answer the question
 
 
-Research articles that collect and analize interview duration with CATI survey data.
+Research articles that collect and analize interview duration with computer assisted telephone surveys (CATI) data.
 
 ## What are the research question key concepts?
 
@@ -130,7 +128,7 @@ Research articles that collect and analize interview duration with CATI survey d
 
 There is a very long list of [academic databases and search engines](https://en.wikipedia.org/wiki/List_of_academic_databases_and_search_engines).
 
->How do you choose? 
+>How to choose? 
 
 In addition to any specific requirements which might come from the specificity of the research question (e.g. medical trials have dedicated databases), recent research by [Gusenbauer and Haddaway (2019](https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1378)) suggests the following databases:  
 
@@ -150,7 +148,7 @@ In addition to any specific requirements which might come from the specificity o
 * [Wiley Online Library](https://onlinelibrary.wiley.com/)
 
 
-**[Gusenbauer and Haddaway (2019](https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1378)) further suggest that systems such as Google scholar, have severe performance limitations and should only be considered supplementary to these latter databases, especially for non-query‐based search methods where they might still provide great benefit.**
+**[Gusenbauer and Haddaway (2019](https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1378)) further suggest that systems such as Google scholar have severe performance limitations and should only be considered supplementary to these latter databases, especially for non-query‐based search methods where they might still provide great benefit.**
 
 ***
 
@@ -158,7 +156,7 @@ For the sake of this exercise, we go with the [Web of Science Core Collection](h
 
 ## Document the search process
 
-Keep an log of the all the steps taken to make the search reproducible.
+Keep a log of the all the steps taken to make the search reproducible.
 
 ## Identify appropriate index terms and identify synonyms
 
@@ -176,27 +174,27 @@ The initial terms we identify are the following:
 
 ## Use database appropriate syntax
 
-Check the [advance search](http://images.webofknowledge.com/WOKRS535R100/help/WOS/hp_advanced_search.html) help menu of WoS
+Check the [advance search](http://images.webofknowledge.com/WOKRS535R100/help/WOS/hp_advanced_search.html) help menu of Web of Science.
 
 The start of our query will be the following:
 
 >ALL=(survey  AND  telephone  AND  duration)  
 
-![Select language and document type](./optimize.png)
+![Select language and document type](./optimize.png){width=120%}
 
 
 ## Optimize the search
 
 >We can start delimiting and optimizing our search by, for example, selecting the language and the type of documents.
 
-![Results](./optimize2.png)
+![Results](./optimize2.png){width=120%}
 
 
 Next we can add the synonyms we previously identified.
 
 >ALL=(survey OR surveys)  AND  ALL=(telephone  OR  CATI)  AND  ALL=(duration  OR  length  OR  timestamps)
 
-![Add synonyms](./optimize3.png)
+![Add synonyms](./optimize3.png){width=120%}
 
 
 
@@ -204,60 +202,70 @@ Next we can add the synonyms we previously identified.
 
 Extend this query to other databases fitting your research question.
 
+***
 
-# Evaluting the data collected  
+# Selecting the relevant literature: presenting the ASReview  
 
 So now we got the data and we have 1227 entries. Do we have to read all this papers?
 
 >Short answer: yes. 
 
-However, we can look for the help of more systematized methods to reduce the number of papers we actually have to read.
+However, it is very likely that a high proportion of these entries are actually not relevant to our research question. We can then look for the help of more systematized methods to reduce the number of papers we actually have to read.
 
-## Presenting the ASReview
+## ASReview
 
 [ASReview](https://asreview.nl/) enables you to screen more texts than the traditional way of screening in the same amount of time. Which means that you can achieve a higher quality than when you would have used the traditional approach.
 
-Detailed information regarding how to install and the data format can be found in the [website](https://asreview.nl/). 
+
+![Illustration of ASReview](./FlowChart.png){width=70%}
+
+
+The following video presents how ASReview helps us gain in efficiency compared to traditional reviews.
+
 
 
 ![graph)](./asreview.mp4)
 
 Source: [Here](https://twitter.com/LGTummers/status/1326153384710168576)
 
+Detailed information regarding how to install and other relevant issues can be found in the [ASReview](https://asreview.nl/) website. 
+
+
+
 ## Example: using the ASreview
 
->After compiling the results of the systematic review to a .ris format file we can introduce it to ASreview.
+>After compiling the results of the systematic review to a .ris format file we can introduce it to ASReview.
 
 
-![ASreview](./asreview1.png)
+![ASreview](./asreview1.png){width=80%}
 
 
 
 >Then we must set the priors to train the active learning system. This is done by looking at the abstracts and selecting the ones that are relevant or irrelevant to our research question.
 
-![Relevant](./asreview2.png)
+![Relevant](./asreview2.png){width=80%}
 
 
 
 
 
 
-![Relevant](./asreview3.png)
+![Relevant](./asreview3.png){width=80%}
 
->After classifying some documents (the more, the better)  we can select the model of our preference. More information about the specificites of each of this models can be found in the ASreview website.
+>After classifying some documents (the more, the better)  we can select the model of our preference. More information about the specificities of each of these training models can be found in the [ASReview](https://asreview.nl/) website.
 
-![Learning Model](./asreview4.png)
-
-
-
-![Statistics](./asreview5.png)
+![Learning Model](./asreview4.png){width=80%}
 
 
 
+![Statistics](./asreview5.png){width=80%}
 
-# Final document
 
->Final results of our active learning systematic review. All 1227 are now ranked by relevance following the priors we set in the active learning model. 
+
+
+## Final Results
+
+>In the final results we can see all the 1227 entries of the literature review now ranked by relevance following the priors we set in the active learning model. 
 
 
 ![Excel](./excel1.png)
@@ -268,6 +276,7 @@ Source: [Here](https://twitter.com/LGTummers/status/1326153384710168576)
 
 library(readxl)
 library(knitr)
+library(kableExtra)
 
 
 df <- read_excel("asreview_result_interview-length.xlsx")
@@ -276,10 +285,19 @@ df <- read_excel("asreview_result_interview-length.xlsx")
 ```
 
 
-```{r, echo=TRUE}
+>A closer look to each of the final results columns.
+
+```{r, echo=FALSE, warning=FALSE}
 
 
-kable(head(df))
+#kable(df[1:2, ], format = "html") 
+
+x<-kable(df[1:2, ], format = "html") 
+column_spec(x,10,width_min = "40em")
+
+#kable(df[1:2, ])
+
+
 
 
 ```
