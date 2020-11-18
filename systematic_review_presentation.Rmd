@@ -220,9 +220,9 @@ However, we can look for the help of more systematized methods to reduce the num
 Detailed information regarding how to install and the data format can be found in the [website](https://asreview.nl/). 
 
 
-![https://twitter.com/LGTummers/status/1326153384710168576)](./asreview.mp4)
+![graph)](./asreview.mp4)
 
-
+Source: [Here](https://twitter.com/LGTummers/status/1326153384710168576)
 
 ## Example: using the ASreview
 
