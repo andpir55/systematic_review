@@ -185,7 +185,7 @@ The start of our query will be the following:
 
 >ALL=(survey  AND  telephone  AND  duration)  
 
-![Select language and document type](./optimize.png){width=120%}
+![Select language and document type](./img/optimize.png){width="120%"}
 
 
 ## Optimize the search
