@@ -877,31 +877,28 @@ Systematic Review with Active Learning
 <div class="row row-offcanvas row-offcanvas-right">
 <div class="contents col-xs-12 col-md-10">
 <h1 id="introduction">Introduction</h1>
-<p>The main goal of this document is to introduce systematic reviews, explain why they are useful and present a workflow to conduct a systematic review with the help of an active learning system.</p>
+<p>The main goal of this document is to introduce systematic reviews, explain why they are useful and present a workflow to conduct systematic reviews using artificial intelligence to assist in the task of finding relevant texts.</p>
 <h1 id="what-is-a-systematic-review">What is a systematic review?</h1>
-<p>Systematic literature reviews are a method of making sense of large bodies of information, and a means of contributing to the answers to questions about what works and what does not – and many other types of question too. They are a method of mapping out areas of uncertainty, and identifying where little or no relevant research has been done, but where new studies are needed.</p>
-<p>Systematic reviews also flag up areas where spurious certainty abounds. These are areas where we think we know more than we do, but where in reality there is little convincing evidence to support our beliefs. <a href="https://doi.org/10.1002/9780470754887">(Petticew &amp; Roberts, 2005, pp. 2</a>)</p>
-<h2 id="systematic-review-vs-meta-analysis-vs-narrative-review">Systematic review vs meta-analysis vs Narrative review</h2>
-<p>A systematic review answers strives to comprehensively identify, appraise, and synthesize all the relevant studies on a given topic. Systematic reviews are often used to test just a single hypothesis, or a series of related hypotheses.</p>
-<p>A meta-analysis uses a specific statistical technique for synthesizing the results of several studies into a single quantitative estimate (i.e., a summary effect size).</p>
-<p>A narrative review is the process of synthesizing primary studies and exploring heterogeneity descriptively, rather than statistically. <a href="https://doi.org/10.1002/9780470754887">(Petticew &amp; Roberts, 2005, pp. 19</a>)</p>
+<p>“Systematic literature reviews are a method of making sense of large bodies of information, and a means of contributing to the answers to questions about what works and what does not – and many other types of question too. They are a method of mapping out areas of uncertainty, and identifying where little or no relevant research has been done, but where new studies are needed. Systematic reviews also flag up areas where spurious certainty abounds. These are areas where we think we know more than we do, but where in reality there is little convincing evidence to support our beliefs.”<a href="https://doi.org/10.1002/9780470754887">(Petticew &amp; Roberts, 2005, pp. 2</a>)</p>
+<h2 id="systematic-review-vs-meta-analysis-vs-narrative-review">Systematic review vs meta-analysis vs narrative review</h2>
+<p>“A systematic review answers strives to comprehensively identify, appraise, and synthesize all the relevant studies on a given topic. Systematic reviews are often used to test just a single hypothesis, or a series of related hypotheses.”</p>
+<p>“A meta-analysis uses a specific statistical technique for synthesizing the results of several studies into a single quantitative estimate (i.e., a summary effect size).”</p>
+<p>“A narrative review is the process of synthesizing primary studies and exploring heterogeneity descriptively, rather than statistically.”</p>
+<p><a href="https://doi.org/10.1002/9780470754887">(Petticew &amp; Roberts, 2005, pp. 19</a>)</p>
 <h2 id="why-do-a-systematic-review">Why do a systematic review?</h2>
 <p>It is a fair criticism of scientific research that it is often difficult to know which, if any, study to believe.</p>
 <blockquote>
 <p>Newton’s Third Law of Motion: ‘‘For every expert there is an equal and opposite expert.’’</p>
 </blockquote>
-<p>The traditional scientific approach to this problem is to carry out a literature review.</p>
-<p>However, traditional literature reviews frequently summarize highly unrepresentative samples of studies in an unsystematic and uncritical fashion.</p>
-<p>But the problem is not just one of inconsistency, but one of information overload.</p>
-<p>The massive expansion of research output, both in peer-reviewed publications, and unpublished, e.g. in conference presentations or symposia, mean it is difficult to establish what work has been done in your area already, and to ensure that knowledge keeps up to date with the best research evidence.</p>
+<p>The traditional scientific approach to this problem is to carry out a literature review. However, traditional literature reviews frequently summarize unrepresentative samples of studies in an unsystematic fashion. But the problem is not just one of inconsistency, but one of information overload. The massive expansion of research output, both in peer-reviewed publications, and unpublished, e.g. in conference presentations or symposia, mean it is difficult to establish what work has been done in your area already, and to ensure that knowledge keeps up to date with the best research evidence.</p>
 <h2 id="the-role-of-systematic-literature-reviews">The role of systematic literature reviews</h2>
 <p>Systematic reviews are literature reviews that adhere closely to a set of scientific methods that explicitly aim to limit systematic error (bias), mainly by attempting to identify, appraise and synthesize all relevant studies (of whatever design) in order to answer a particular question (or set of questions).</p>
 <p>Systematic review will be most useful when:</p>
-<p>• there is a clear and defined research question</p>
-<p>• several empirical studies have been published</p>
-<p>• there is uncertainty about the results</p>
+<p>• there is a clear and defined research question;</p>
+<p>• several empirical studies have been published;</p>
+<p>• there is uncertainty about the results.</p>
 <hr />
-<h1 id="tutorial-my-first-systematic-review-with-active-learning">Tutorial: My first systematic review with active learning</h1>
+<h1 id="tutorial-my-first-systematic-review">Tutorial: My first systematic review</h1>
 <p>A systematic review needs a detailed protocol that describes how the review will be processed and methods that will be applied. There are several published examples of such protocols. Here we follow the protocol suggested by <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6148622/">Bramer et al. (2018)</a> which consists on the following steps:</p>
 <ol style="list-style-type: decimal">
 <li><p>Determine a clear and focused question</p></li>
@@ -920,24 +917,24 @@ Systematic Review with Active Learning
 <li><p>Translate to other databases</p></li>
 <li><p>Test and reiterate</p></li>
 </ol>
-<p>Note: This tutorial will not follow through with an exhaustive account of each of these steps. Instead, a shortened version of this list will presented and discussed.</p>
-<h2 id="determine-a-clear-and-focused-question">Determine a clear and focused question</h2>
+<p>Note: This tutorial will not follow through with an exhaustive account of each of these steps. Instead, a shortened version with some steps of this list will presented and discussed.</p>
+<h2 id="determine-a-clear-and-focused-question">1. Determine a clear and focused question</h2>
 <p>For the sake of this exercise, the aim is to answer the following question:</p>
 <blockquote>
 <p>What factors explain interview duration in computer assisted telephone surveys?</p>
 </blockquote>
-<h2 id="describe-the-articles-that-can-answer-the-question">Describe the articles that can answer the question</h2>
+<h2 id="describe-the-articles-that-can-answer-the-question">2. Describe the articles that can answer the question</h2>
 <p>Research articles that collect and analize interview duration with computer assisted telephone surveys (CATI) data.</p>
-<h2 id="what-are-the-research-question-key-concepts">What are the research question key concepts?</h2>
+<h2 id="what-are-the-research-question-key-concepts">3. What are the research question key concepts?</h2>
 <ul>
 <li><p>Survey</p></li>
-<li><p>telephone</p></li>
+<li><p>Telephone</p></li>
 <li><p>Interview duration</p></li>
 </ul>
-<h2 id="choose-the-database">Choose the database</h2>
+<h2 id="choose-the-database">5. Choose the database</h2>
 <p>There is a very long list of <a href="https://en.wikipedia.org/wiki/List_of_academic_databases_and_search_engines">academic databases and search engines</a>.</p>
 <blockquote>
-<p>How to choose?</p>
+<p>How to choose the database?</p>
 </blockquote>
 <p>In addition to any specific requirements which might come from the specificity of the research question (e.g. medical trials have dedicated databases), recent research by <a href="https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1378">Gusenbauer and Haddaway (2019</a>) suggests the following databases:</p>
 <ul>
@@ -958,81 +955,68 @@ Systematic Review with Active Learning
 </ul>
 <p><strong><a href="https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1378">Gusenbauer and Haddaway (2019</a>) further suggest that systems such as Google scholar have severe performance limitations and should only be considered supplementary to these latter databases, especially for non-query‐based search methods where they might still provide great benefit.</strong></p>
 <hr />
-<p>For the sake of this exercise, we go with the <a href="https://www.webofknowledge.com">Web of Science Core Collection</a></p>
-<h2 id="document-the-search-process">Document the search process</h2>
-<p>Keep a log of the all the steps taken to make the search reproducible.</p>
-<h2 id="identify-appropriate-index-terms-and-identify-synonyms">Identify appropriate index terms and identify synonyms</h2>
+<p>In this exercise we use the <a href="https://www.webofknowledge.com">Web of Science Core Collection</a></p>
+<h2 id="document-the-search-process-in-a-text-document">6. Document the search process in a text document</h2>
+<p>Keep a document with a log of the all the search/query steps in order to make it reproducible.</p>
+<h2 id="identify-appropriate-index-terms-in-the-thesaurus-of-the-first-database">7. Identify appropriate index terms in the thesaurus of the first database</h2>
 <p>The initial terms we identify are the following:</p>
 <ul>
-<li>duration</li>
-<li>telephone</li>
+<li>Duration</li>
+<li>Telephone</li>
 <li>Survey</li>
 </ul>
-<h2 id="add-variations-in-search-terms-truncation-spelling-differences-abbreviations-opposites">Add variations in search terms (truncation, spelling differences, abbreviations, opposites)</h2>
+<h2 id="identify-synonyms-9.-add-variations-in-search-terms">8. Identify synonyms &amp; 9. Add variations in search terms</h2>
 <ul>
-<li>timestamps</li>
-<li>interview lenght</li>
+<li>Timestamps</li>
+<li>Interview lenght</li>
 <li>CATI</li>
 </ul>
-<h2 id="use-database-appropriate-syntax">Use database appropriate syntax</h2>
+<h2 id="use-database-appropriate-syntax-with-parentheses-boolean-operators-and-field-codes">10. Use database-appropriate syntax, with parentheses, Boolean operators, and field codes</h2>
 <p>Check the <a href="http://images.webofknowledge.com/WOKRS535R100/help/WOS/hp_advanced_search.html">advance search</a> help menu of Web of Science.</p>
 <p>The start of our query will be the following:</p>
 <blockquote>
 <p>ALL=(survey AND telephone AND duration)</p>
 </blockquote>
 <p><img src="./img/optimize.png" style="width:120.0%" alt="Select language and document type" /></p>
-<h2 id="optimize-the-search">Optimize the search</h2>
-<blockquote>
+<h2 id="optimize-the-search">11. Optimize the search</h2>
 <p>We can start delimiting and optimizing our search by, for example, selecting the language and the type of documents.</p>
-</blockquote>
 <p><img src="./img/optimize2.png" style="width:120.0%" alt="Results" /></p>
 <p>Next we can add the synonyms we previously identified.</p>
 <blockquote>
 <p>ALL=(survey OR surveys) AND ALL=(telephone OR CATI) AND ALL=(duration OR length OR timestamps)</p>
 </blockquote>
 <p><img src="./img/optimize3.png" style="width:120.0%" alt="Add synonyms" /></p>
-<h2 id="extend-this-query-to-other-databases">Extend this query to other databases</h2>
-<p>Extend this query to other databases fitting your research question.</p>
+<h2 id="translate-to-other-databases">14. Translate to other databases</h2>
+<p>Extend the search/query to other databases.</p>
 <hr />
-<h1 id="selecting-the-relevant-literature-presenting-the-asreview">Selecting the relevant literature: presenting the ASReview</h1>
+<h1 id="selecting-the-relevant-literature">Selecting the relevant literature</h1>
 <p>So now we got the data and we have 1227 entries. Do we have to read all this papers?</p>
-<blockquote>
-<p>Short answer: yes.</p>
-</blockquote>
-<p>However, it is very likely that a high proportion of these entries are actually not relevant to our research question. We can then look for the help of more systematized methods to reduce the number of papers we actually have to read.</p>
-<h2 id="asreview">ASReview</h2>
-<p><a href="https://asreview.nl/">ASReview</a> enables you to screen more texts than the traditional way of screening in the same amount of time. Which means that you can achieve a higher quality than when you would have used the traditional approach.</p>
+<p><strong>Short answer: yes.</strong></p>
+<p>However, it is very likely that a high proportion of these entries are actually not relevant to our research question. We can look for the help of active learning (artificial intelligence) systems to reduce the number of papers we actually have to read or at least to identify the most relevant papers.</p>
+<h2 id="presenting-the-asreview">Presenting the ASReview</h2>
+<p>The <a href="https://asreview.nl/">ASReview</a> enables you to screen more texts than the traditional way of screening literature reviews in the same amount of time. How?</p>
 <p><img src="./img/FlowChart.png" style="width:70.0%" alt="Illustration of ASReview" /></p>
-<p>The following video presents how ASReview helps us gain in efficiency compared to traditional reviews.</p>
+<p>ASReview helps by <a href="https://asreview.nl/asreview-class-101/">“‘simply’ (…) continuously reorder the stack of records based on relevance scores computed by a machine learning model. By reordering the records based on predicted relevance, you will find the relevant records way sooner than the traditional way.”</a></p>
 <p><video src="./img/asreview.mp4" controls=""><a href="./img/asreview.mp4">graph)</a></video></p>
-<p>Source: <a href="https://twitter.com/LGTummers/status/1326153384710168576">Here</a></p>
-<p>Detailed information regarding how to install and other relevant issues can be found in the <a href="https://asreview.nl/">ASReview</a> website.</p>
+<p>Source: <a href="https://asreview.nl/asreview-class-101/">ASReview-class-101</a></p>
+<p>Detailed information regarding how to install and other related issues, such as file formats, can be found in the <a href="https://asreview.nl/">ASReview</a> website and <a href="https://readthedocs.org/projects/asreview/downloads/pdf/stable/">documentation</a>.</p>
 <h2 id="example-using-the-asreview">Example: using the ASreview</h2>
-<blockquote>
-<p>After compiling the results of the systematic review to a .ris format file we can introduce it to ASReview.</p>
-</blockquote>
-<p><img src="./img/asreview1.png" style="width:80.0%" alt="ASreview" /></p>
-<blockquote>
+<p>After compiling the results of the systematic review we conducted before to a <a href="https://asreview.readthedocs.io/en/latest/intro/datasets.html">compatible data format file</a> we are ready to introduce it into ASReview.</p>
+<p><img src="./img/asreview1.png" style="width:80.0%" alt="ASReview" /></p>
 <p>Then we must set the priors to train the active learning system. This is done by looking at the abstracts and selecting the ones that are relevant or irrelevant to our research question.</p>
-</blockquote>
+<p>An efficient way to do this is by searching for a specific document you already know is relevant.</p>
 <p><img src="./img/asreview2.png" style="width:80.0%" alt="Relevant" /></p>
 <p><img src="./img/asreview3.png" style="width:80.0%" alt="Relevant" /></p>
-<blockquote>
-<p>After classifying some documents (the more, the better) we can select the model of our preference. More information about the specificities of each of these training models can be found in the <a href="https://asreview.nl/">ASReview</a> website.</p>
-</blockquote>
+<p>After classifying some documents (the more, the better) we can select the model of our preference. More information about the specificities of each of these training models can be found in the <a href="https://asreview.readthedocs.io/en/latest/features/pre_screening.html#select-model">ASReview</a> website.</p>
 <p><img src="./img/asreview4.png" style="width:80.0%" alt="Learning Model" /></p>
-<p><img src="./asreview5.png" style="width:80.0%" alt="Statistics" /></p>
+<p><img src="./img/asreview5.png" style="width:80.0%" alt="Statistics" /></p>
 <h2 id="final-results">Final Results</h2>
-<blockquote>
 <p>In the final results we can see all the 1227 entries of the literature review now ranked by relevance following the priors we set in the active learning model.</p>
-</blockquote>
 <p><img src="./img/excel1.png" alt="Excel" /></p>
 <div class="row">
 
 </div>
-<blockquote>
-<p>A closer look to each of the final results columns.</p>
-</blockquote>
+<p>Each entry holds the following paper metadata:</p>
 <div class="row">
 <table>
 <thead>
@@ -1219,8 +1203,7 @@ NA
 </table>
 </div>
 <h1 id="further-information">Further information</h1>
-<p>How to report systematic review and metanalyses?</p>
-<p><a href="https://www.prisma-statement.org/">PRISMA</a></p>
+<p><a href="https://www.prisma-statement.org/">PRISMA</a>: how to report systematic reviews (and metanalyses)</p>
 </div>
 </div>
 <div class="navbar navbar-fixed-bottom navbar-inverse">
